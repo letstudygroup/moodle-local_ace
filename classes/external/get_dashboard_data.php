@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\external;
+namespace local_aceengine\external;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/ace/lib.php');
+require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -29,7 +29,7 @@ use context_course;
 /**
  * External function to get ACE dashboard data for the current user.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -69,28 +69,28 @@ class get_dashboard_data extends external_api {
         require_capability('local/ace:viewdashboard', $context);
 
         // Check per-course enablement.
-        if (!local_ace_is_enabled_for_course($courseid)) {
-            throw new \moodle_exception('error_ace_disabled_for_course', 'local_ace');
+        if (!local_aceengine_is_enabled_for_course($courseid)) {
+            throw new \moodle_exception('error_ace_disabled_for_course', 'local_aceengine');
         }
 
         $userid = $USER->id;
 
         // Get engagement score.
-        $engagement = $DB->get_record('local_ace_engagement', [
+        $engagement = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
         $engagementscore = $engagement ? (float) $engagement->score : 0.0;
 
         // Get mastery score.
-        $mastery = $DB->get_record('local_ace_mastery', [
+        $mastery = $DB->get_record('local_aceengine_mastery', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
         $masteryscore = $mastery ? (float) $mastery->score : 0.0;
 
         // Get XP and level data.
-        $xprecord = $DB->get_record('local_ace_xp', [
+        $xprecord = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -106,14 +106,14 @@ class get_dashboard_data extends external_api {
         $levelprogress = $xprequired > 0 ? round(($xpinlevel / $xprequired) * 100, 2) : 0.0;
 
         // Count active quests.
-        $activequestscount = $DB->count_records('local_ace_quests', [
+        $activequestscount = $DB->count_records('local_aceengine_quests', [
             'userid' => $userid,
             'courseid' => $courseid,
             'status' => 'active',
         ]);
 
         // Count completed quests.
-        $completedquestscount = $DB->count_records('local_ace_quests', [
+        $completedquestscount = $DB->count_records('local_aceengine_quests', [
             'userid' => $userid,
             'courseid' => $courseid,
             'status' => 'completed',

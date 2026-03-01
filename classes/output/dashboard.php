@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Dashboard renderable for local_ace.
+ * Dashboard renderable for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\output;
+namespace local_aceengine\output;
 
 use renderable;
 use templatable;
@@ -33,7 +33,7 @@ use renderer_base;
  *
  * Loads all ACE data for a user in a course and prepares it for template rendering.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -99,21 +99,21 @@ class dashboard implements renderable, templatable {
         $this->courseid = $courseid;
 
         // Load engagement score.
-        $engagement = $DB->get_record('local_ace_engagement', [
+        $engagement = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
         $this->engagementscore = !empty($engagement) ? (float) $engagement->score : 0.0;
 
         // Load mastery score.
-        $mastery = $DB->get_record('local_ace_mastery', [
+        $mastery = $DB->get_record('local_aceengine_mastery', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
         $this->masteryscore = !empty($mastery) ? (float) $mastery->score : 0.0;
 
         // Load XP and level.
-        $xprecord = $DB->get_record('local_ace_xp', [
+        $xprecord = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -126,7 +126,7 @@ class dashboard implements renderable, templatable {
         // Load active quests (exclude expired ones even if cleanup task hasn't run yet).
         $now = time();
         $this->activequests = $DB->get_records_sql(
-            'SELECT * FROM {local_ace_quests}
+            'SELECT * FROM {local_aceengine_quests}
              WHERE userid = ? AND courseid = ? AND status = ?
                AND (expirydate = 0 OR expirydate > ?)
              ORDER BY timecreated DESC',
@@ -134,7 +134,7 @@ class dashboard implements renderable, templatable {
         );
 
         // Count completed quests.
-        $this->completedcount = $DB->count_records('local_ace_quests', [
+        $this->completedcount = $DB->count_records('local_aceengine_quests', [
             'userid' => $userid,
             'courseid' => $courseid,
             'status' => 'completed',
@@ -317,10 +317,10 @@ class dashboard implements renderable, templatable {
 
         // Map priorities to Bootstrap classes.
         $prioritymap = [
-            'urgent' => ['cls' => 'danger', 'label' => get_string('learning_path_priority_high', 'local_ace')],
-            'high' => ['cls' => 'danger', 'label' => get_string('learning_path_priority_high', 'local_ace')],
-            'medium' => ['cls' => 'warning', 'label' => get_string('learning_path_priority_medium', 'local_ace')],
-            'low' => ['cls' => 'info', 'label' => get_string('learning_path_priority_low', 'local_ace')],
+            'urgent' => ['cls' => 'danger', 'label' => get_string('learning_path_priority_high', 'local_aceengine')],
+            'high' => ['cls' => 'danger', 'label' => get_string('learning_path_priority_high', 'local_aceengine')],
+            'medium' => ['cls' => 'warning', 'label' => get_string('learning_path_priority_medium', 'local_aceengine')],
+            'low' => ['cls' => 'info', 'label' => get_string('learning_path_priority_low', 'local_aceengine')],
         ];
 
         foreach ($steps as $step) {
@@ -450,9 +450,9 @@ class dashboard implements renderable, templatable {
             $key = $act->modname . '_' . $act->instance;
             $islowgrade = isset($lowgrademodules[$key]);
 
-            $reason = get_string('rec_reason_next', 'local_ace');
+            $reason = get_string('rec_reason_next', 'local_aceengine');
             if ($islowgrade) {
-                $reason = get_string('rec_reason_improve', 'local_ace');
+                $reason = get_string('rec_reason_improve', 'local_aceengine');
             }
 
             $sectionlabel = !empty($act->sectionname)

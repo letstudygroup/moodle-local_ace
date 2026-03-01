@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/ace/db" VERSION="2026022100" COMMENT="XMLDB file for local_ace"
+<XMLDB PATH="local/aceengine/db" VERSION="2026022100" COMMENT="XMLDB file for local_aceengine"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
 
-    <TABLE NAME="local_ace_engagement" COMMENT="User engagement scores per course">
+    <TABLE NAME="local_aceengine_engagement" COMMENT="User engagement scores per course">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -29,7 +29,7 @@
       </INDEXES>
     </TABLE>
 
-    <TABLE NAME="local_ace_mastery" COMMENT="User mastery scores per course">
+    <TABLE NAME="local_aceengine_mastery" COMMENT="User mastery scores per course">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -51,7 +51,7 @@
       </INDEXES>
     </TABLE>
 
-    <TABLE NAME="local_ace_quests" COMMENT="Generated quests for users">
+    <TABLE NAME="local_aceengine_quests" COMMENT="Generated quests for users">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -83,7 +83,7 @@
       </INDEXES>
     </TABLE>
 
-    <TABLE NAME="local_ace_xp" COMMENT="User XP and levels">
+    <TABLE NAME="local_aceengine_xp" COMMENT="User XP and levels">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -103,11 +103,11 @@
       </INDEXES>
     </TABLE>
 
-    <!-- NOTE: local_ace_team_xp and local_ace_mission_templates tables
+    <!-- NOTE: local_aceengine_team_xp and local_aceengine_mission_templates tables
          have been moved to local_ace_pro. Existing tables are preserved
          during upgrade and will be managed by the Pro plugin. -->
 
-    <TABLE NAME="local_ace_analytics" COMMENT="Analytics snapshots for engagement and mastery trends">
+    <TABLE NAME="local_aceengine_analytics" COMMENT="Analytics snapshots for engagement and mastery trends">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -129,7 +129,7 @@
       </INDEXES>
     </TABLE>
 
-    <TABLE NAME="local_ace_license" COMMENT="License status cache">
+    <TABLE NAME="local_aceengine_license" COMMENT="License status cache">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="licensekey" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>

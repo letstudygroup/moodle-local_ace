@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\licensing;
+namespace local_aceengine\licensing;
 /**
  * License manager class for Pro licensing verification.
  *
@@ -23,7 +23,7 @@ namespace local_ace\licensing;
  * HMAC verification to ensure response integrity. Supports a 7-day
  * grace period after license expiry.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -147,7 +147,7 @@ class license_manager {
      * @return bool True if Pro features are enabled.
      */
     public function is_pro_enabled(): bool {
-        $licensekey = get_config('local_ace', 'licensekey');
+        $licensekey = get_config('local_aceengine', 'licensekey');
         if (empty($licensekey)) {
             return false;
         }
@@ -171,18 +171,18 @@ class license_manager {
      * Sends the license key and site domain to the configured license
      * server endpoint. Validates the server response using HMAC-SHA256
      * with the license key as the secret. Caches the result in the
-     * local_ace_license table.
+     * local_aceengine_license table.
      *
      * @return array Associative array with 'status', 'message', and optional 'expirydate'.
      */
     public function verify_license(): array {
         global $CFG;
 
-        $licensekey = get_config('local_ace', 'licensekey');
+        $licensekey = get_config('local_aceengine', 'licensekey');
         if (empty($licensekey)) {
             return [
                 'status' => self::STATUS_INVALID,
-                'message' => get_string('licensestatus_none', 'local_ace'),
+                'message' => get_string('licensestatus_none', 'local_aceengine'),
             ];
         }
 
@@ -192,8 +192,8 @@ class license_manager {
         $postdata = [
             'license_key' => $licensekey,
             'domain' => $domain,
-            'plugin' => 'local_ace',
-            'version' => get_config('local_ace', 'version') ?: '1.0.0',
+            'plugin' => 'local_aceengine',
+            'version' => get_config('local_aceengine', 'version') ?: '1.0.0',
         ];
 
         $url = self::LICENSE_SERVER_URL . '/verify';
@@ -273,14 +273,14 @@ class license_manager {
 
         // Determine display message.
         if ($internalstatus === self::STATUS_ACTIVE) {
-            $message = get_string('licensestatus_valid', 'local_ace');
+            $message = get_string('licensestatus_valid', 'local_aceengine');
         } else if ($internalstatus === self::STATUS_EXPIRED && $this->is_in_grace_period()) {
             $daysremaining = $this->get_grace_days_remaining();
-            $message = get_string('licensestatus_grace', 'local_ace', $daysremaining);
+            $message = get_string('licensestatus_grace', 'local_aceengine', $daysremaining);
         } else if ($internalstatus === self::STATUS_EXPIRED) {
-            $message = get_string('licensestatus_expired', 'local_ace');
+            $message = get_string('licensestatus_expired', 'local_aceengine');
         } else {
-            $message = get_string('licensestatus_invalid', 'local_ace');
+            $message = get_string('licensestatus_invalid', 'local_aceengine');
         }
 
         return [
@@ -293,7 +293,7 @@ class license_manager {
     /**
      * Get the current cached license status.
      *
-     * Returns the status string from the local_ace_license table
+     * Returns the status string from the local_aceengine_license table
      * without contacting the license server.
      *
      * @return string The cached license status (active, expired, invalid, inactive).
@@ -332,7 +332,7 @@ class license_manager {
         $postdata = [
             'license_key' => $key,
             'domain' => $domain,
-            'plugin' => 'local_ace',
+            'plugin' => 'local_aceengine',
             'action' => 'activate',
         ];
 
@@ -378,7 +378,7 @@ class license_manager {
 
         if ($success) {
             // Save the license key to plugin config.
-            set_config('licensekey', $key, 'local_ace');
+            set_config('licensekey', $key, 'local_aceengine');
 
             // Cache the license status.
             $internalstatus = self::STATUS_ACTIVE;
@@ -386,13 +386,13 @@ class license_manager {
 
             return [
                 'success' => true,
-                'message' => get_string('licensestatus_valid', 'local_ace'),
+                'message' => get_string('licensestatus_valid', 'local_aceengine'),
             ];
         }
 
         return [
             'success' => false,
-            'message' => $data['message'] ?? get_string('licensestatus_invalid', 'local_ace'),
+            'message' => $data['message'] ?? get_string('licensestatus_invalid', 'local_aceengine'),
         ];
     }
 
@@ -407,7 +407,7 @@ class license_manager {
     public function deactivate_license(): bool {
         global $CFG, $DB;
 
-        $licensekey = get_config('local_ace', 'licensekey');
+        $licensekey = get_config('local_aceengine', 'licensekey');
         if (empty($licensekey)) {
             return true; // Nothing to deactivate.
         }
@@ -418,7 +418,7 @@ class license_manager {
         $postdata = [
             'license_key' => $licensekey,
             'domain' => $domain,
-            'plugin' => 'local_ace',
+            'plugin' => 'local_aceengine',
             'action' => 'deactivate',
         ];
 
@@ -436,10 +436,10 @@ class license_manager {
         // We proceed regardless of server response.
 
         // Remove cached license record.
-        $DB->delete_records('local_ace_license', ['licensekey' => $licensekey]);
+        $DB->delete_records('local_aceengine_license', ['licensekey' => $licensekey]);
 
         // Clear the license key from config.
-        set_config('licensekey', '', 'local_ace');
+        set_config('licensekey', '', 'local_aceengine');
 
         return true;
     }
@@ -540,7 +540,7 @@ class license_manager {
             $graceuntil = $expirydate + self::GRACE_PERIOD_SECONDS;
         }
 
-        $existing = $DB->get_record('local_ace_license', ['licensekey' => $licensekey]);
+        $existing = $DB->get_record('local_aceengine_license', ['licensekey' => $licensekey]);
 
         $record = new \stdClass();
         $record->licensekey = $licensekey;
@@ -557,10 +557,10 @@ class license_manager {
 
         if ($existing) {
             $record->id = $existing->id;
-            $DB->update_record('local_ace_license', $record);
+            $DB->update_record('local_aceengine_license', $record);
         } else {
             $record->timecreated = $now;
-            $DB->insert_record('local_ace_license', $record);
+            $DB->insert_record('local_aceengine_license', $record);
         }
     }
 
@@ -572,12 +572,12 @@ class license_manager {
     private function get_cached_license(): \stdClass|false {
         global $DB;
 
-        $licensekey = get_config('local_ace', 'licensekey');
+        $licensekey = get_config('local_aceengine', 'licensekey');
         if (empty($licensekey)) {
             return false;
         }
 
-        return $DB->get_record('local_ace_license', ['licensekey' => $licensekey]);
+        return $DB->get_record('local_aceengine_license', ['licensekey' => $licensekey]);
     }
 
     /**

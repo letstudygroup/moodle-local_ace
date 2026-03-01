@@ -14,16 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\event;
+namespace local_aceengine\event;
 
-use local_ace\notification_manager;
+use local_aceengine\notification_manager;
 /**
- * Event observer for local_ace.
+ * Event observer for local_aceengine.
  *
  * Handles various Moodle events to award XP and check quest completion
  * for the Adaptive Challenge Engine plugin.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -222,8 +222,8 @@ class observer {
      */
     private static function is_enabled_for_course(int $courseid): bool {
         global $CFG;
-        require_once($CFG->dirroot . '/local/ace/lib.php');
-        return \local_ace_is_enabled_for_course($courseid);
+        require_once($CFG->dirroot . '/local/aceengine/lib.php');
+        return \local_aceengine_is_enabled_for_course($courseid);
     }
 
     /**
@@ -256,21 +256,21 @@ class observer {
     private static function award_activity_xp(int $userid, int $courseid): void {
         global $DB;
 
-        $xpperactivity = (int) get_config('local_ace', 'xp_per_activity');
+        $xpperactivity = (int) get_config('local_aceengine', 'xp_per_activity');
         if ($xpperactivity <= 0) {
             $xpperactivity = 10;
         }
 
         $now = time();
-        $xprecord = $DB->get_record('local_ace_xp', [
+        $xprecord = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
 
         if ($xprecord) {
             $newxp = (int) $xprecord->xp + $xpperactivity;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->update_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->update_record('local_aceengine_xp', (object) [
                 'id' => $xprecord->id,
                 'xp' => $newxp,
                 'level' => $newlevel,
@@ -278,8 +278,8 @@ class observer {
             ]);
         } else {
             $newxp = $xpperactivity;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->insert_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->insert_record('local_aceengine_xp', (object) [
                 'userid' => $userid,
                 'courseid' => $courseid,
                 'xp' => $newxp,
@@ -305,7 +305,7 @@ class observer {
     private static function check_quest_completion(int $userid, int $courseid, string $questtype, int $cmid = 0): void {
         global $DB;
 
-        $quests = $DB->get_records('local_ace_quests', [
+        $quests = $DB->get_records('local_aceengine_quests', [
             'userid' => $userid,
             'courseid' => $courseid,
             'status' => 'active',
@@ -317,7 +317,7 @@ class observer {
         }
 
         $now = time();
-        $xpperquest = (int) get_config('local_ace', 'xp_per_quest');
+        $xpperquest = (int) get_config('local_aceengine', 'xp_per_quest');
         if ($xpperquest <= 0) {
             $xpperquest = 50;
         }
@@ -325,7 +325,7 @@ class observer {
         foreach ($quests as $quest) {
             // Skip expired quests.
             if ($quest->expirydate > 0 && $quest->expirydate < $now) {
-                $DB->update_record('local_ace_quests', (object) [
+                $DB->update_record('local_aceengine_quests', (object) [
                     'id' => $quest->id,
                     'status' => 'expired',
                     'timemodified' => $now,
@@ -383,7 +383,7 @@ class observer {
     private static function complete_quest(\stdClass $quest, int $userid, int $courseid, int $now, int $defaultxp): void {
         global $DB;
 
-        $DB->update_record('local_ace_quests', (object) [
+        $DB->update_record('local_aceengine_quests', (object) [
             'id' => $quest->id,
             'status' => 'completed',
             'completeddate' => $now,
@@ -395,7 +395,7 @@ class observer {
             $xpreward = $defaultxp;
         }
 
-        $xprecord = $DB->get_record('local_ace_xp', [
+        $xprecord = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -404,8 +404,8 @@ class observer {
 
         if ($xprecord) {
             $newxp = (int) $xprecord->xp + $xpreward;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->update_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->update_record('local_aceengine_xp', (object) [
                 'id' => $xprecord->id,
                 'xp' => $newxp,
                 'level' => $newlevel,
@@ -413,8 +413,8 @@ class observer {
             ]);
         } else {
             $newxp = $xpreward;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->insert_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->insert_record('local_aceengine_xp', (object) [
                 'userid' => $userid,
                 'courseid' => $courseid,
                 'xp' => $newxp,

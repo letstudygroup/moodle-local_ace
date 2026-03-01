@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\privacy;
+namespace local_aceengine\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -24,17 +24,17 @@ use core_privacy\tests\provider_testcase;
 /**
  * Tests for the privacy provider.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_ace\privacy\provider
+ * @covers     \local_aceengine\privacy\provider
  */
 final class privacy_provider_test extends provider_testcase {
     /**
      * Test that metadata collection is not empty.
      */
     public function test_get_metadata(): void {
-        $collection = new collection('local_ace');
+        $collection = new collection('local_aceengine');
         $result = provider::get_metadata($collection);
 
         $this->assertNotEmpty($result);
@@ -58,7 +58,7 @@ final class privacy_provider_test extends provider_testcase {
         $coursecontext = \context_course::instance($course->id);
 
         // Insert engagement data for the user.
-        $DB->insert_record('local_ace_engagement', (object) [
+        $DB->insert_record('local_aceengine_engagement', (object) [
             'userid' => $user->id,
             'courseid' => $course->id,
             'score' => 75.0,
@@ -72,7 +72,7 @@ final class privacy_provider_test extends provider_testcase {
         ]);
 
         // Insert XP data for the user.
-        $DB->insert_record('local_ace_xp', (object) [
+        $DB->insert_record('local_aceengine_xp', (object) [
             'userid' => $user->id,
             'courseid' => $course->id,
             'xp' => 200,
@@ -114,7 +114,7 @@ final class privacy_provider_test extends provider_testcase {
         $coursecontext = \context_course::instance($course->id);
 
         // Insert data in multiple tables.
-        $DB->insert_record('local_ace_engagement', (object) [
+        $DB->insert_record('local_aceengine_engagement', (object) [
             'userid' => $user->id,
             'courseid' => $course->id,
             'score' => 75.0,
@@ -127,7 +127,7 @@ final class privacy_provider_test extends provider_testcase {
             'timemodified' => time(),
         ]);
 
-        $DB->insert_record('local_ace_xp', (object) [
+        $DB->insert_record('local_aceengine_xp', (object) [
             'userid' => $user->id,
             'courseid' => $course->id,
             'xp' => 350,
@@ -136,7 +136,7 @@ final class privacy_provider_test extends provider_testcase {
             'timemodified' => time(),
         ]);
 
-        $DB->insert_record('local_ace_quests', (object) [
+        $DB->insert_record('local_aceengine_quests', (object) [
             'userid' => $user->id,
             'courseid' => $course->id,
             'questtype' => 'login',
@@ -152,7 +152,7 @@ final class privacy_provider_test extends provider_testcase {
         ]);
 
         // Export data.
-        $contextlist = new approved_contextlist($user, 'local_ace', [$coursecontext->id]);
+        $contextlist = new approved_contextlist($user, 'local_aceengine', [$coursecontext->id]);
         provider::export_user_data($contextlist);
 
         // Verify data was written by the privacy writer.
@@ -176,7 +176,7 @@ final class privacy_provider_test extends provider_testcase {
 
         // Insert data for both users.
         foreach ([$user1, $user2] as $user) {
-            $DB->insert_record('local_ace_engagement', (object) [
+            $DB->insert_record('local_aceengine_engagement', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'score' => 75.0,
@@ -189,7 +189,7 @@ final class privacy_provider_test extends provider_testcase {
                 'timemodified' => time(),
             ]);
 
-            $DB->insert_record('local_ace_xp', (object) [
+            $DB->insert_record('local_aceengine_xp', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'xp' => 200,
@@ -198,7 +198,7 @@ final class privacy_provider_test extends provider_testcase {
                 'timemodified' => time(),
             ]);
 
-            $DB->insert_record('local_ace_quests', (object) [
+            $DB->insert_record('local_aceengine_quests', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'questtype' => 'login',
@@ -214,33 +214,33 @@ final class privacy_provider_test extends provider_testcase {
         }
 
         // Delete data only for user1.
-        $contextlist = new approved_contextlist($user1, 'local_ace', [$coursecontext->id]);
+        $contextlist = new approved_contextlist($user1, 'local_aceengine', [$coursecontext->id]);
         provider::delete_data_for_user($contextlist);
 
         // User1's data should be gone.
-        $this->assertFalse($DB->record_exists('local_ace_engagement', [
+        $this->assertFalse($DB->record_exists('local_aceengine_engagement', [
             'userid' => $user1->id,
             'courseid' => $course->id,
         ]));
-        $this->assertFalse($DB->record_exists('local_ace_xp', [
+        $this->assertFalse($DB->record_exists('local_aceengine_xp', [
             'userid' => $user1->id,
             'courseid' => $course->id,
         ]));
-        $this->assertFalse($DB->record_exists('local_ace_quests', [
+        $this->assertFalse($DB->record_exists('local_aceengine_quests', [
             'userid' => $user1->id,
             'courseid' => $course->id,
         ]));
 
         // User2's data should still exist.
-        $this->assertTrue($DB->record_exists('local_ace_engagement', [
+        $this->assertTrue($DB->record_exists('local_aceengine_engagement', [
             'userid' => $user2->id,
             'courseid' => $course->id,
         ]));
-        $this->assertTrue($DB->record_exists('local_ace_xp', [
+        $this->assertTrue($DB->record_exists('local_aceengine_xp', [
             'userid' => $user2->id,
             'courseid' => $course->id,
         ]));
-        $this->assertTrue($DB->record_exists('local_ace_quests', [
+        $this->assertTrue($DB->record_exists('local_aceengine_quests', [
             'userid' => $user2->id,
             'courseid' => $course->id,
         ]));
@@ -260,7 +260,7 @@ final class privacy_provider_test extends provider_testcase {
 
         // Insert data for two users.
         foreach ([$user1, $user2] as $user) {
-            $DB->insert_record('local_ace_engagement', (object) [
+            $DB->insert_record('local_aceengine_engagement', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'score' => 60.0,
@@ -273,7 +273,7 @@ final class privacy_provider_test extends provider_testcase {
                 'timemodified' => time(),
             ]);
 
-            $DB->insert_record('local_ace_xp', (object) [
+            $DB->insert_record('local_aceengine_xp', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'xp' => 100,
@@ -282,7 +282,7 @@ final class privacy_provider_test extends provider_testcase {
                 'timemodified' => time(),
             ]);
 
-            $DB->insert_record('local_ace_mastery', (object) [
+            $DB->insert_record('local_aceengine_mastery', (object) [
                 'userid' => $user->id,
                 'courseid' => $course->id,
                 'score' => 55.0,
@@ -295,16 +295,16 @@ final class privacy_provider_test extends provider_testcase {
         }
 
         // Verify data exists.
-        $this->assertEquals(2, $DB->count_records('local_ace_engagement', ['courseid' => $course->id]));
-        $this->assertEquals(2, $DB->count_records('local_ace_xp', ['courseid' => $course->id]));
-        $this->assertEquals(2, $DB->count_records('local_ace_mastery', ['courseid' => $course->id]));
+        $this->assertEquals(2, $DB->count_records('local_aceengine_engagement', ['courseid' => $course->id]));
+        $this->assertEquals(2, $DB->count_records('local_aceengine_xp', ['courseid' => $course->id]));
+        $this->assertEquals(2, $DB->count_records('local_aceengine_mastery', ['courseid' => $course->id]));
 
         // Delete all data for the context.
         provider::delete_data_for_all_users_in_context($coursecontext);
 
         // All records for this course should be gone.
-        $this->assertEquals(0, $DB->count_records('local_ace_engagement', ['courseid' => $course->id]));
-        $this->assertEquals(0, $DB->count_records('local_ace_xp', ['courseid' => $course->id]));
-        $this->assertEquals(0, $DB->count_records('local_ace_mastery', ['courseid' => $course->id]));
+        $this->assertEquals(0, $DB->count_records('local_aceengine_engagement', ['courseid' => $course->id]));
+        $this->assertEquals(0, $DB->count_records('local_aceengine_xp', ['courseid' => $course->id]));
+        $this->assertEquals(0, $DB->count_records('local_aceengine_mastery', ['courseid' => $course->id]));
     }
 }

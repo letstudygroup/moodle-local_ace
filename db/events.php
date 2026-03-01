@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Event observers for local_ace.
+ * Event observers for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,34 +27,34 @@ defined('MOODLE_INTERNAL') || die();
 $observers = [
     [
         'eventname' => '\core\event\course_module_completion_updated',
-        'callback'  => 'local_ace\event\observer::course_module_completion_updated',
+        'callback'  => 'local_aceengine\event\observer::course_module_completion_updated',
     ],
     [
         'eventname' => '\mod_quiz\event\attempt_submitted',
-        'callback'  => 'local_ace\event\observer::quiz_attempt_submitted',
+        'callback'  => 'local_aceengine\event\observer::quiz_attempt_submitted',
     ],
     [
         'eventname' => '\mod_quiz\event\attempt_reviewed',
-        'callback'  => 'local_ace\event\observer::quiz_attempt_reviewed',
+        'callback'  => 'local_aceengine\event\observer::quiz_attempt_reviewed',
     ],
     [
         'eventname' => '\mod_forum\event\post_created',
-        'callback'  => 'local_ace\event\observer::forum_post_created',
+        'callback'  => 'local_aceengine\event\observer::forum_post_created',
     ],
     [
         'eventname' => '\mod_assign\event\submission_created',
-        'callback'  => 'local_ace\event\observer::assignment_submitted',
+        'callback'  => 'local_aceengine\event\observer::assignment_submitted',
     ],
     [
         'eventname' => '\core\event\user_graded',
-        'callback'  => 'local_ace\event\observer::user_graded',
+        'callback'  => 'local_aceengine\event\observer::user_graded',
     ],
     [
         'eventname' => '\core\event\course_viewed',
-        'callback'  => 'local_ace\event\observer::course_viewed',
+        'callback'  => 'local_aceengine\event\observer::course_viewed',
     ],
     [
         'eventname' => '\core\event\course_module_viewed',
-        'callback'  => 'local_ace\event\observer::course_module_viewed',
+        'callback'  => 'local_aceengine\event\observer::course_module_viewed',
     ],
 ];

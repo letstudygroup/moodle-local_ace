@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_ace/dashboard
+    @template local_aceengine/dashboard
 
     ACE Dashboard template.
 
@@ -67,7 +67,7 @@
         <div class="col-sm-6 col-lg-3 mb-3">
             <div class="card local-ace-score-card h-100">
                 <div class="card-body text-center">
-                    <h5 class="card-title text-muted">{{#str}}engagementscore, local_ace{{/str}}</h5>
+                    <h5 class="card-title text-muted">{{#str}}engagementscore, local_aceengine{{/str}}</h5>
                     <div class="local-ace-score-value display-4">{{engagementscore}}%</div>
                     <div class="progress mt-2 local-ace-progress">
                         <div class="progress-bar bg-primary" role="progressbar"
@@ -81,7 +81,7 @@
         <div class="col-sm-6 col-lg-3 mb-3">
             <div class="card local-ace-score-card h-100">
                 <div class="card-body text-center">
-                    <h5 class="card-title text-muted">{{#str}}masteryscore, local_ace{{/str}}</h5>
+                    <h5 class="card-title text-muted">{{#str}}masteryscore, local_aceengine{{/str}}</h5>
                     <div class="local-ace-score-value display-4">{{masteryscore}}%</div>
                     <div class="progress mt-2 local-ace-progress">
                         <div class="progress-bar bg-success" role="progressbar"
@@ -95,16 +95,16 @@
         <div class="col-sm-6 col-lg-3 mb-3">
             <div class="card local-ace-score-card h-100">
                 <div class="card-body text-center">
-                    <h5 class="card-title text-muted">{{#str}}totalxp, local_ace{{/str}}</h5>
+                    <h5 class="card-title text-muted">{{#str}}totalxp, local_aceengine{{/str}}</h5>
                     <div class="local-ace-score-value display-4">{{xp}}</div>
-                    <small class="text-muted">{{#str}}xp_label, local_ace{{/str}}</small>
+                    <small class="text-muted">{{#str}}xp_label, local_aceengine{{/str}}</small>
                 </div>
             </div>
         </div>
         <div class="col-sm-6 col-lg-3 mb-3">
             <div class="card local-ace-score-card h-100">
                 <div class="card-body text-center">
-                    <h5 class="card-title text-muted">{{#str}}level, local_ace{{/str}}</h5>
+                    <h5 class="card-title text-muted">{{#str}}level, local_aceengine{{/str}}</h5>
                     <div class="local-ace-score-value display-4">{{level}}</div>
                     <div class="progress mt-2 local-ace-progress">
                         <div class="progress-bar bg-warning" role="progressbar"
@@ -120,19 +120,19 @@
 
     {{! Active quests section }}
     <div class="local-ace-quests-section mb-4">
-        <h3 class="mb-3">{{#str}}activequests, local_ace{{/str}}</h3>
+        <h3 class="mb-3">{{#str}}activequests, local_aceengine{{/str}}</h3>
         {{#hasactivequests}}
             <div class="row">
                 {{#activequests}}
                     <div class="col-md-6 col-lg-4 mb-3">
-                        {{> local_ace/quest_card}}
+                        {{> local_aceengine/quest_card}}
                     </div>
                 {{/activequests}}
             </div>
         {{/hasactivequests}}
         {{^hasactivequests}}
             <div class="alert alert-info">
-                {{#str}}noactivequests, local_ace{{/str}}
+                {{#str}}noactivequests, local_aceengine{{/str}}
             </div>
         {{/hasactivequests}}
     </div>
@@ -140,7 +140,7 @@
     {{! Recommended activities (Pro feature) }}
     {{#hasrecommendations}}
     <div class="local-ace-recommendations-section mb-4">
-        <h3 class="mb-3">{{#str}}recommendations_title, local_ace{{/str}} <span class="badge badge-info">{{#str}}pro_badge, local_ace{{/str}}</span></h3>
+        <h3 class="mb-3">{{#str}}recommendations_title, local_aceengine{{/str}} <span class="badge badge-info">{{#str}}pro_badge, local_aceengine{{/str}}</span></h3>
         <div class="list-group">
             {{#recommendations}}
             <a href="{{url}}" class="list-group-item list-group-item-action d-flex align-items-center">
@@ -149,7 +149,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <strong>{{name}}</strong>
                         {{#islowgrade}}
-                        <span class="badge badge-warning ml-2">{{#str}}rec_needs_improvement, local_ace{{/str}}</span>
+                        <span class="badge badge-warning ml-2">{{#str}}rec_needs_improvement, local_aceengine{{/str}}</span>
                         {{/islowgrade}}
                     </div>
                     <small class="text-muted">{{section}} &middot; {{reason}}</small>
@@ -166,8 +166,8 @@
     <div class="local-ace-content-suggestions-section mb-4">
         <h3 class="mb-3">
             <i class="fa fa-lightbulb-o text-success"></i>
-            {{#str}}content_suggestions_student_title, local_ace{{/str}}
-            <span class="badge badge-info">{{#str}}pro_badge, local_ace{{/str}}</span>
+            {{#str}}content_suggestions_student_title, local_aceengine{{/str}}
+            <span class="badge badge-info">{{#str}}pro_badge, local_aceengine{{/str}}</span>
         </h3>
         <div class="list-group">
             {{#contentsuggestions}}
@@ -194,13 +194,13 @@
                         <div class="mt-1">
                             {{#has_url}}
                             <a href="{{url}}" target="_blank" class="btn btn-sm btn-primary" rel="noopener noreferrer">
-                                <i class="fa fa-external-link"></i> {{#str}}content_suggestions_visit, local_ace{{/str}}
+                                <i class="fa fa-external-link"></i> {{#str}}content_suggestions_visit, local_aceengine{{/str}}
                             </a>
                             {{/has_url}}
                             {{^has_url}}
                                 {{#search_url}}
                                 <a href="{{search_url}}" target="_blank" class="btn btn-sm btn-outline-primary" rel="noopener noreferrer">
-                                    <i class="fa fa-search"></i> {{#str}}content_suggestions_search, local_ace{{/str}}
+                                    <i class="fa fa-search"></i> {{#str}}content_suggestions_search, local_aceengine{{/str}}
                                 </a>
                                 {{/search_url}}
                             {{/has_url}}
@@ -212,7 +212,7 @@
         </div>
         {{#contentsuggestiondate}}
         <small class="text-muted mt-2 d-block">
-            {{#str}}content_suggestions_generated, local_ace{{/str}} {{contentsuggestiondate}}
+            {{#str}}content_suggestions_generated, local_aceengine{{/str}} {{contentsuggestiondate}}
         </small>
         {{/contentsuggestiondate}}
     </div>
@@ -223,8 +223,8 @@
     <div class="local-ace-learning-path-section mb-4">
         <h3 class="mb-3">
             <i class="fa fa-road text-primary"></i>
-            {{#str}}learning_path_student_title, local_ace{{/str}}
-            <span class="badge badge-info">{{#str}}pro_badge, local_ace{{/str}}</span>
+            {{#str}}learning_path_student_title, local_aceengine{{/str}}
+            <span class="badge badge-info">{{#str}}pro_badge, local_aceengine{{/str}}</span>
         </h3>
         {{#learningpathsummary}}
         <div class="alert alert-light border mb-3">
@@ -233,7 +233,7 @@
         {{/learningpathsummary}}
         {{#learningpathhours}}
         <p class="text-muted small mb-3">
-            <i class="fa fa-clock-o"></i> {{#str}}learning_path_estimated, local_ace{{/str}} <strong>{{learningpathhours}}h</strong>
+            <i class="fa fa-clock-o"></i> {{#str}}learning_path_estimated, local_aceengine{{/str}} <strong>{{learningpathhours}}h</strong>
         </p>
         {{/learningpathhours}}
         <div class="list-group">
@@ -261,7 +261,7 @@
                         </div>
                         <p class="mb-1 text-muted small">{{description}}</p>
                         {{#reason}}
-                        <p class="mb-0 small"><em class="text-info"><i class="fa fa-lightbulb-o"></i> {{#str}}learning_path_why, local_ace{{/str}} {{reason}}</em></p>
+                        <p class="mb-0 small"><em class="text-info"><i class="fa fa-lightbulb-o"></i> {{#str}}learning_path_why, local_aceengine{{/str}} {{reason}}</em></p>
                         {{/reason}}
                         {{#section_hint}}
                         <small class="text-muted"><i class="fa fa-bookmark-o"></i> {{section_hint}}</small>
@@ -273,7 +273,7 @@
         </div>
         {{#learningpathdate}}
         <small class="text-muted mt-2 d-block">
-            {{#str}}learning_path_generated, local_ace{{/str}} {{learningpathdate}}
+            {{#str}}learning_path_generated, local_aceengine{{/str}} {{learningpathdate}}
         </small>
         {{/learningpathdate}}
     </div>
@@ -283,7 +283,7 @@
     <div class="local-ace-completed-section">
         <div class="card">
             <div class="card-body d-flex align-items-center">
-                <span class="mr-2"><strong>{{#str}}completedquests, local_ace{{/str}}:</strong></span>
+                <span class="mr-2"><strong>{{#str}}completedquests, local_aceengine{{/str}}:</strong></span>
                 <span class="badge badge-success badge-pill local-ace-completed-badge">{{completedcount}}</span>
             </div>
         </div>

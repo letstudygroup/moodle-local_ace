@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 /**
  * Quest generator class for creating daily quests.
  *
@@ -22,7 +22,7 @@ namespace local_ace;
  * Supports multiple quest types including activity completion, forum posts,
  * quiz challenges, resource views, login streaks, and grade targets.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -74,7 +74,7 @@ class quest_generator {
     public function generate_daily_quests(int $userid, int $courseid, array $recommendations = []): array {
         global $DB;
 
-        $questcount = (int) get_config('local_ace', 'dailyquestcount')
+        $questcount = (int) get_config('local_aceengine', 'dailyquestcount')
             ?: self::DEFAULT_DAILY_QUEST_COUNT;
 
         // Check how many active quests the user already has for today.
@@ -82,7 +82,7 @@ class quest_generator {
         $todayend = strtotime('today 23:59:59');
 
         $existingtoday = $DB->count_records_select(
-            'local_ace_quests',
+            'local_aceengine_quests',
             'userid = :userid AND courseid = :courseid AND timecreated >= :todaystart AND timecreated <= :todayend',
             [
                 'userid' => $userid,
@@ -109,7 +109,7 @@ class quest_generator {
         }
 
         // Get currently active quest target IDs to avoid duplicates.
-        $activequests = $DB->get_records('local_ace_quests', [
+        $activequests = $DB->get_records('local_aceengine_quests', [
             'userid' => $userid,
             'courseid' => $courseid,
             'status' => self::STATUS_ACTIVE,
@@ -191,7 +191,7 @@ class quest_generator {
         $available[] = [
             'type' => self::TYPE_LOGIN,
             'params' => [
-                'title' => $sm->get_string('questtype_login', 'local_ace', null, 'en'),
+                'title' => $sm->get_string('questtype_login', 'local_aceengine', null, 'en'),
                 'description' => 'Log in to the course today to maintain your streak.',
             ],
         ];
@@ -221,7 +221,7 @@ class quest_generator {
                         'type' => self::TYPE_FORUM,
                         'params' => [
                             'targetid' => $mod->id,
-                            'title' => $sm->get_string('questtype_forum', 'local_ace', null, 'en') . ': ' . $forum->name,
+                            'title' => $sm->get_string('questtype_forum', 'local_aceengine', null, 'en') . ': ' . $forum->name,
                             'description' => 'Make a post in the forum: ' . $forum->name,
                         ],
                     ];
@@ -236,7 +236,7 @@ class quest_generator {
                         'params' => [
                             'targetid' => $mod->id,
                             'targetvalue' => $targetgrade,
-                            'title' => $sm->get_string('questtype_quiz', 'local_ace', null, 'en') . ': ' . $quiz->name,
+                            'title' => $sm->get_string('questtype_quiz', 'local_aceengine', null, 'en') . ': ' . $quiz->name,
                             'description' => 'Achieve at least ' . $targetgrade . '% on: ' . $quiz->name,
                         ],
                     ];
@@ -249,7 +249,7 @@ class quest_generator {
                         'type' => self::TYPE_RESOURCE,
                         'params' => [
                             'targetid' => $mod->id,
-                            'title' => $sm->get_string('questtype_resource', 'local_ace', null, 'en') . ': ' . $resource->name,
+                            'title' => $sm->get_string('questtype_resource', 'local_aceengine', null, 'en') . ': ' . $resource->name,
                             'description' => 'View the resource: ' . $resource->name,
                         ],
                     ];
@@ -264,7 +264,7 @@ class quest_generator {
                         'params' => [
                             'targetid' => $mod->id,
                             'targetvalue' => $targetgrade,
-                            'title' => $sm->get_string('questtype_grade', 'local_ace', null, 'en') . ': ' . $assign->name,
+                            'title' => $sm->get_string('questtype_grade', 'local_aceengine', null, 'en') . ': ' . $assign->name,
                             'description' => 'Achieve at least ' . $targetgrade . ' on: ' . $assign->name,
                         ],
                     ];
@@ -275,7 +275,7 @@ class quest_generator {
                     'type' => self::TYPE_ACTIVITY,
                     'params' => [
                         'targetid' => $mod->id,
-                        'title' => $sm->get_string('questtype_activity', 'local_ace', null, 'en')
+                        'title' => $sm->get_string('questtype_activity', 'local_aceengine', null, 'en')
                             . ': ' . ($assign->name ?? 'Activity'),
                         'description' => 'Complete the activity: ' . ($assign->name ?? 'Activity'),
                     ],
@@ -288,7 +288,7 @@ class quest_generator {
                     'type' => self::TYPE_ACTIVITY,
                     'params' => [
                         'targetid' => $mod->id,
-                        'title' => $sm->get_string('questtype_activity', 'local_ace', null, 'en') . ': ' . $name,
+                        'title' => $sm->get_string('questtype_activity', 'local_aceengine', null, 'en') . ': ' . $name,
                         'description' => 'Complete the activity: ' . $name,
                     ],
                 ];
@@ -301,7 +301,7 @@ class quest_generator {
     /**
      * Create a single quest for a user in a course.
      *
-     * Inserts a new quest record into the local_ace_quests table with
+     * Inserts a new quest record into the local_aceengine_quests table with
      * the specified type and parameters. The quest expires at the end
      * of the current day (23:59:59).
      *
@@ -332,7 +332,7 @@ class quest_generator {
         $engine = new adaptive_engine();
         $params = $engine->adjust_quest_params($userid, $courseid, $params);
 
-        $basexp = (int) get_config('local_ace', 'xp_per_quest') ?: self::DEFAULT_XP_PER_QUEST;
+        $basexp = (int) get_config('local_aceengine', 'xp_per_quest') ?: self::DEFAULT_XP_PER_QUEST;
         $now = time();
         $expirydate = strtotime('today 23:59:59');
 
@@ -354,7 +354,7 @@ class quest_generator {
         $record->timecreated = $now;
         $record->timemodified = $now;
 
-        $record->id = $DB->insert_record('local_ace_quests', $record);
+        $record->id = $DB->insert_record('local_aceengine_quests', $record);
 
         return $record;
     }
@@ -434,7 +434,7 @@ class quest_generator {
     public function check_quest_completion(int $questid): bool {
         global $DB;
 
-        $quest = $DB->get_record('local_ace_quests', ['id' => $questid]);
+        $quest = $DB->get_record('local_aceengine_quests', ['id' => $questid]);
         if (!$quest || $quest->status !== self::STATUS_ACTIVE) {
             return false;
         }
@@ -443,7 +443,7 @@ class quest_generator {
         if ($quest->expirydate > 0 && time() > $quest->expirydate) {
             $quest->status = self::STATUS_EXPIRED;
             $quest->timemodified = time();
-            $DB->update_record('local_ace_quests', $quest);
+            $DB->update_record('local_aceengine_quests', $quest);
             return false;
         }
 
@@ -485,32 +485,32 @@ class quest_generator {
     public function complete_quest(int $questid, int $userid): int {
         global $DB;
 
-        $quest = $DB->get_record('local_ace_quests', ['id' => $questid]);
+        $quest = $DB->get_record('local_aceengine_quests', ['id' => $questid]);
         if (!$quest) {
-            throw new \moodle_exception('error_questnotfound', 'local_ace');
+            throw new \moodle_exception('error_questnotfound', 'local_aceengine');
         }
 
         if ($quest->status === self::STATUS_COMPLETED) {
-            throw new \moodle_exception('error_questalreadycompleted', 'local_ace');
+            throw new \moodle_exception('error_questalreadycompleted', 'local_aceengine');
         }
 
         if ((int) $quest->userid !== (int) $userid) {
-            throw new \moodle_exception('error_nopermission', 'local_ace');
+            throw new \moodle_exception('error_nopermission', 'local_aceengine');
         }
 
         // Check expiry.
         if ($quest->expirydate > 0 && time() > $quest->expirydate) {
             $quest->status = self::STATUS_EXPIRED;
             $quest->timemodified = time();
-            $DB->update_record('local_ace_quests', $quest);
-            throw new \moodle_exception('questexpired', 'local_ace');
+            $DB->update_record('local_aceengine_quests', $quest);
+            throw new \moodle_exception('questexpired', 'local_aceengine');
         }
 
         $now = time();
         $quest->status = self::STATUS_COMPLETED;
         $quest->completeddate = $now;
         $quest->timemodified = $now;
-        $DB->update_record('local_ace_quests', $quest);
+        $DB->update_record('local_aceengine_quests', $quest);
 
         // Award XP.
         $xpreward = (int) $quest->xpreward;

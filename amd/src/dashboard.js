@@ -14,13 +14,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Dashboard interactivity module for local_ace.
+ * Dashboard interactivity module for local_aceengine.
  *
  * Initializes the ACE dashboard on a course page.
  * Quest completion is handled automatically via Moodle event observers
  * when students complete the linked activities.
  *
- * @module     local_ace/dashboard
+ * @module     local_aceengine/dashboard
  * @copyright  2026 LetStudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

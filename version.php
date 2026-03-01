@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for local_ace.
+ * Version information for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2026022208;
 $plugin->requires  = 2024100700; // Moodle 4.5.
-$plugin->component = 'local_ace';
+$plugin->component = 'local_aceengine';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.4.1';

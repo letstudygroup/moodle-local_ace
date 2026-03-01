@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\external;
+namespace local_aceengine\external;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/ace/lib.php');
+require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -30,7 +30,7 @@ use context_course;
 /**
  * External function to get active quests for the current user in a course.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -70,8 +70,8 @@ class get_quest_data extends external_api {
         require_capability('local/ace:viewdashboard', $context);
 
         // Check per-course enablement.
-        if (!local_ace_is_enabled_for_course($courseid)) {
-            throw new \moodle_exception('error_ace_disabled_for_course', 'local_ace');
+        if (!local_aceengine_is_enabled_for_course($courseid)) {
+            throw new \moodle_exception('error_ace_disabled_for_course', 'local_aceengine');
         }
 
         $userid = $USER->id;
@@ -80,7 +80,7 @@ class get_quest_data extends external_api {
         // Exclude expired quests even if the cleanup task hasn't run yet.
         $now = time();
         $quests = $DB->get_records_sql(
-            'SELECT * FROM {local_ace_quests}
+            'SELECT * FROM {local_aceengine_quests}
              WHERE userid = ? AND courseid = ? AND status = ?
                AND (expirydate = 0 OR expirydate > ?)
              ORDER BY expirydate ASC',

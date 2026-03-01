@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 /**
  * Tests for the xp_manager class.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_ace\xp_manager
+ * @covers     \local_aceengine\xp_manager
  */
 final class xp_manager_test extends \advanced_testcase {
     /**

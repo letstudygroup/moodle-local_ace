@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 /**
  * Tests for the quest_generator class.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_ace\quest_generator
+ * @covers     \local_aceengine\quest_generator
  */
 final class quest_generator_test extends \advanced_testcase {
     /**
@@ -51,7 +51,7 @@ final class quest_generator_test extends \advanced_testcase {
             'completion' => COMPLETION_TRACKING_AUTOMATIC,
         ]);
 
-        set_config('dailyquestcount', 3, 'local_ace');
+        set_config('dailyquestcount', 3, 'local_aceengine');
 
         $generator = new quest_generator();
         $quests = $generator->generate_daily_quests($user->id, $course->id);
@@ -87,7 +87,7 @@ final class quest_generator_test extends \advanced_testcase {
             'completion' => COMPLETION_TRACKING_AUTOMATIC,
         ]);
 
-        set_config('dailyquestcount', 3, 'local_ace');
+        set_config('dailyquestcount', 3, 'local_aceengine');
 
         $generator = new quest_generator();
 
@@ -109,7 +109,7 @@ final class quest_generator_test extends \advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
         $user = $this->getDataGenerator()->create_user();
 
-        set_config('xp_per_quest', 100, 'local_ace');
+        set_config('xp_per_quest', 100, 'local_aceengine');
 
         $generator = new quest_generator();
         $quest = $generator->create_quest($user->id, $course->id, quest_generator::TYPE_LOGIN, [
@@ -150,7 +150,7 @@ final class quest_generator_test extends \advanced_testcase {
         $generator->complete_quest($quest->id, $user->id);
 
         // Verify the status changed to completed in the database.
-        $updated = $DB->get_record('local_ace_quests', ['id' => $quest->id]);
+        $updated = $DB->get_record('local_aceengine_quests', ['id' => $quest->id]);
         $this->assertEquals(quest_generator::STATUS_COMPLETED, $updated->status);
         $this->assertNotNull($updated->completeddate);
         $this->assertGreaterThan(0, (int) $updated->completeddate);

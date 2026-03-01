@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_ace/my_quests
+    @template local_aceengine/my_quests
 
     My Quests page template.
 
@@ -37,7 +37,7 @@
             <div class="card text-center">
                 <div class="card-body py-3">
                     <div class="h3 mb-0 text-warning font-weight-bold">{{totalxp}}</div>
-                    <small class="text-muted">{{#str}}totalxp, local_ace{{/str}}</small>
+                    <small class="text-muted">{{#str}}totalxp, local_aceengine{{/str}}</small>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
             <div class="card text-center">
                 <div class="card-body py-3">
                     <div class="h3 mb-0 text-primary font-weight-bold">{{totalactivequests}}</div>
-                    <small class="text-muted">{{#str}}activequests, local_ace{{/str}}</small>
+                    <small class="text-muted">{{#str}}activequests, local_aceengine{{/str}}</small>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
             <div class="card text-center">
                 <div class="card-body py-3">
                     <div class="h3 mb-0 text-success font-weight-bold">{{totalcompletedquests}}</div>
-                    <small class="text-muted">{{#str}}completedquests, local_ace{{/str}}</small>
+                    <small class="text-muted">{{#str}}completedquests, local_aceengine{{/str}}</small>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
 
     {{^hascourses}}
         <div class="alert alert-info text-center">
-            {{#str}}noquestsyet, local_ace{{/str}}
+            {{#str}}noquestsyet, local_aceengine{{/str}}
         </div>
     {{/hascourses}}
 
@@ -81,13 +81,13 @@
                             <h5 class="mb-0 mr-3">
                                 <a href="{{courseurl}}" class="text-dark local-ace-course-link">{{coursename}}</a>
                             </h5>
-                            <span class="badge badge-warning mr-2">{{xp}} {{#str}}xp_label, local_ace{{/str}}</span>
-                            <span class="badge badge-info mr-2">{{#str}}level, local_ace{{/str}} {{level}}</span>
+                            <span class="badge badge-warning mr-2">{{xp}} {{#str}}xp_label, local_aceengine{{/str}}</span>
+                            <span class="badge badge-info mr-2">{{#str}}level, local_aceengine{{/str}} {{level}}</span>
                             {{#hasactivequests}}
-                                <span class="badge badge-primary mr-2">{{activequestcount}} {{#str}}activequests, local_ace{{/str}}</span>
+                                <span class="badge badge-primary mr-2">{{activequestcount}} {{#str}}activequests, local_aceengine{{/str}}</span>
                             {{/hasactivequests}}
                             {{#hascompletedquests}}
-                                <span class="badge badge-success">{{completedquestcount}} {{#str}}completedquests, local_ace{{/str}}</span>
+                                <span class="badge badge-success">{{completedquestcount}} {{#str}}completedquests, local_aceengine{{/str}}</span>
                             {{/hascompletedquests}}
                         </div>
                         <i class="fa fa-chevron-down" aria-hidden="true"></i>
@@ -100,12 +100,12 @@
                             {{#hasactivequests}}
                                 <h6 class="text-primary mb-3">
                                     <i class="fa fa-bolt" aria-hidden="true"></i>
-                                    {{#str}}activequests, local_ace{{/str}} ({{activequestcount}})
+                                    {{#str}}activequests, local_aceengine{{/str}} ({{activequestcount}})
                                 </h6>
                                 <div class="row">
                                     {{#activequests}}
                                         <div class="col-md-6 col-lg-4 mb-3">
-                                            {{> local_ace/quest_card}}
+                                            {{> local_aceengine/quest_card}}
                                         </div>
                                     {{/activequests}}
                                 </div>
@@ -118,14 +118,14 @@
                                         data-target="#completed-course-{{courseid}}"
                                         role="button">
                                         <i class="fa fa-check-circle" aria-hidden="true"></i>
-                                        {{#str}}completedquests, local_ace{{/str}} ({{completedquestcount}})
+                                        {{#str}}completedquests, local_aceengine{{/str}} ({{completedquestcount}})
                                         <i class="fa fa-chevron-down ml-1" aria-hidden="true"></i>
                                     </h6>
                                     <div id="completed-course-{{courseid}}" class="collapse">
                                         <div class="row">
                                             {{#completedquests}}
                                                 <div class="col-md-6 col-lg-4 mb-3">
-                                                    {{> local_ace/quest_card}}
+                                                    {{> local_aceengine/quest_card}}
                                                 </div>
                                             {{/completedquests}}
                                         </div>
@@ -136,7 +136,7 @@
                             {{! Link to course dashboard }}
                             <div class="mt-2 text-right">
                                 <a href="{{dashboardurl}}" class="btn btn-outline-primary btn-sm">
-                                    {{#str}}dashboard, local_ace{{/str}}
+                                    {{#str}}dashboard, local_aceengine{{/str}}
                                     <i class="fa fa-arrow-right ml-1" aria-hidden="true"></i>
                                 </a>
                             </div>

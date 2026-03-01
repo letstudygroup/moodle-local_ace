@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 /**
  * Tests for the mastery_scorer class.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_ace\mastery_scorer
+ * @covers     \local_aceengine\mastery_scorer
  */
 final class mastery_scorer_test extends \advanced_testcase {
     /**
@@ -187,7 +187,7 @@ final class mastery_scorer_test extends \advanced_testcase {
             'breadth_score' => 60.0,
         ]);
 
-        $record = $DB->get_record('local_ace_mastery', [
+        $record = $DB->get_record('local_aceengine_mastery', [
             'userid' => $user->id,
             'courseid' => $course->id,
         ]);
@@ -226,7 +226,7 @@ final class mastery_scorer_test extends \advanced_testcase {
         ]);
 
         // There should still be only one record.
-        $records = $DB->get_records('local_ace_mastery', [
+        $records = $DB->get_records('local_aceengine_mastery', [
             'userid' => $user->id,
             'courseid' => $course->id,
         ]);

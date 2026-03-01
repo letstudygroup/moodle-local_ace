@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template local_ace/quest_card
+    @template local_aceengine/quest_card
 
     Quest card template.
 
@@ -62,7 +62,7 @@
         <div class="mb-2">
             <span class="badge badge-secondary local-ace-quest-type-badge">{{questtypelabel}}</span>
             {{#recommended}}
-                <span class="badge badge-primary local-ace-recommended-badge ml-1">{{#str}}quest_recommended, local_ace{{/str}}</span>
+                <span class="badge badge-primary local-ace-recommended-badge ml-1">{{#str}}quest_recommended, local_aceengine{{/str}}</span>
             {{/recommended}}
         </div>
 
@@ -88,7 +88,7 @@
 
         {{! XP reward }}
         <div class="local-ace-quest-xp mb-2">
-            <span class="badge badge-warning local-ace-xp-badge">+{{xpreward}} {{#str}}xp_label, local_ace{{/str}}</span>
+            <span class="badge badge-warning local-ace-xp-badge">+{{xpreward}} {{#str}}xp_label, local_aceengine{{/str}}</span>
         </div>
 
         {{! Expiry countdown }}
@@ -107,15 +107,15 @@
         {{#isactive}}
             {{#hasactivityurl}}
                 <a href="{{activityurl}}" class="btn btn-primary btn-sm mt-auto local-ace-go-to-activity">
-                    {{#str}}gotoactivity, local_ace{{/str}}
+                    {{#str}}gotoactivity, local_aceengine{{/str}}
                 </a>
             {{/hasactivityurl}}
             {{^hasactivityurl}}
-                <span class="badge badge-info mt-auto">{{#str}}quest_autocompletable, local_ace{{/str}}</span>
+                <span class="badge badge-info mt-auto">{{#str}}quest_autocompletable, local_aceengine{{/str}}</span>
             {{/hasactivityurl}}
         {{/isactive}}
         {{#iscompleted}}
-            <span class="badge badge-success mt-auto">{{#str}}questcompleted_badge, local_ace{{/str}}</span>
+            <span class="badge badge-success mt-auto">{{#str}}questcompleted_badge, local_aceengine{{/str}}</span>
         {{/iscompleted}}
         {{#isexpired}}
             <span class="badge badge-danger mt-auto">{{expirydisplay}}</span>

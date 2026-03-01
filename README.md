@@ -22,7 +22,7 @@ ACE is a free Moodle local plugin that brings AI-powered learning analytics, ada
 
 ## Installation
 
-1. Download the plugin and extract it to `/local/ace/` in your Moodle installation.
+1. Download the plugin and extract it to `/local/aceengine/` in your Moodle installation.
 2. Visit **Site administration > Notifications** to complete the installation.
 3. Configure the plugin at **Site administration > Plugins > Local plugins > ACE**.
 

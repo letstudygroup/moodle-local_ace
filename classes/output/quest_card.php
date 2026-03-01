@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Quest card renderable for local_ace.
+ * Quest card renderable for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\output;
+namespace local_aceengine\output;
 
 use renderable;
 use templatable;
@@ -34,7 +34,7 @@ use moodle_url;
  *
  * Represents a single quest for display in the dashboard.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -119,7 +119,7 @@ class quest_card implements renderable, templatable {
 
         if ($this->expirydate > 0) {
             if ($timeremaining <= 0) {
-                $expirydisplay = get_string('questexpired', 'local_ace');
+                $expirydisplay = get_string('questexpired', 'local_aceengine');
                 $isexpired = true;
             } else if ($timeremaining < HOURSECS) {
                 $minutes = (int) ceil($timeremaining / MINSECS);
@@ -188,8 +188,8 @@ class quest_card implements renderable, templatable {
      */
     private function get_questtype_label(): string {
         $key = 'questtype_' . $this->questtype;
-        if (get_string_manager()->string_exists($key, 'local_ace')) {
-            return get_string($key, 'local_ace');
+        if (get_string_manager()->string_exists($key, 'local_aceengine')) {
+            return get_string($key, 'local_aceengine');
         }
         return ucfirst($this->questtype);
     }

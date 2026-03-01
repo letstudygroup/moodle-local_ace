@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 /**
  * XP manager class for managing experience points and levels.
  *
@@ -22,7 +22,7 @@ namespace local_ace;
  * and generating course leaderboards. Level thresholds follow a
  * triangular progression: level N requires the sum of (1..N-1)*100 XP.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,7 +51,7 @@ class xp_manager {
 
         $now = time();
 
-        $existing = $DB->get_record('local_ace_xp', [
+        $existing = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -63,7 +63,7 @@ class xp_manager {
             $existing->xp = $newxp;
             $existing->level = $newlevel;
             $existing->timemodified = $now;
-            $DB->update_record('local_ace_xp', $existing);
+            $DB->update_record('local_aceengine_xp', $existing);
         } else {
             $newlevel = $this->calculate_level($xp);
 
@@ -74,7 +74,7 @@ class xp_manager {
             $record->level = $newlevel;
             $record->timecreated = $now;
             $record->timemodified = $now;
-            $DB->insert_record('local_ace_xp', $record);
+            $DB->insert_record('local_aceengine_xp', $record);
         }
     }
 
@@ -88,7 +88,7 @@ class xp_manager {
     public function get_xp(int $userid, int $courseid): int {
         global $DB;
 
-        $record = $DB->get_record('local_ace_xp', [
+        $record = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -106,7 +106,7 @@ class xp_manager {
     public function get_level(int $userid, int $courseid): int {
         global $DB;
 
-        $record = $DB->get_record('local_ace_xp', [
+        $record = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -191,7 +191,7 @@ class xp_manager {
         $namefields = \core_user\fields::for_name()->get_sql('u', false, '', '', false);
         $sql = "SELECT xp.id, xp.userid, xp.xp, xp.level,
                        {$namefields->selects}
-                  FROM {local_ace_xp} xp
+                  FROM {local_aceengine_xp} xp
                   JOIN {user} u ON u.id = xp.userid
                  WHERE xp.courseid = :courseid
                    AND u.deleted = 0

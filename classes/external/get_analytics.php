@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\external;
+namespace local_aceengine\external;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/ace/lib.php');
+require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
 use core_external\external_api;
 use core_external\external_function_parameters;
@@ -33,7 +33,7 @@ use context_course;
  * Returns engagement trends, mastery trends, and dropout risk data
  * from the analytics snapshots table for the specified time period.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -53,7 +53,7 @@ class get_analytics extends external_api {
     /**
      * Return analytics data for the given course and time period.
      *
-     * Queries the local_ace_analytics table for snapshots within the specified
+     * Queries the local_aceengine_analytics table for snapshots within the specified
      * period and aggregates engagement trends, mastery trends, and dropout risk
      * data for all enrolled users.
      *
@@ -78,8 +78,8 @@ class get_analytics extends external_api {
         require_capability('local/ace:viewanalytics', $context);
 
         // Check per-course enablement.
-        if (!local_ace_is_enabled_for_course($courseid)) {
-            throw new \moodle_exception('error_ace_disabled_for_course', 'local_ace');
+        if (!local_aceengine_is_enabled_for_course($courseid)) {
+            throw new \moodle_exception('error_ace_disabled_for_course', 'local_aceengine');
         }
 
         // Calculate the start timestamp for the requested period.
@@ -147,7 +147,7 @@ class get_analytics extends external_api {
         $sql = "SELECT snapshot_date,
                        AVG(engagement_score) AS average_score,
                        COUNT(DISTINCT userid) AS user_count
-                  FROM {local_ace_analytics}
+                  FROM {local_aceengine_analytics}
                  WHERE courseid = :courseid
                    AND snapshot_date >= :starttime
               GROUP BY snapshot_date
@@ -183,7 +183,7 @@ class get_analytics extends external_api {
         $sql = "SELECT snapshot_date,
                        AVG(mastery_score) AS average_score,
                        COUNT(DISTINCT userid) AS user_count
-                  FROM {local_ace_analytics}
+                  FROM {local_aceengine_analytics}
                  WHERE courseid = :courseid
                    AND snapshot_date >= :starttime
               GROUP BY snapshot_date
@@ -221,10 +221,10 @@ class get_analytics extends external_api {
                        a.dropout_risk,
                        a.engagement_score,
                        a.mastery_score
-                  FROM {local_ace_analytics} a
+                  FROM {local_aceengine_analytics} a
             INNER JOIN (
                         SELECT userid, MAX(snapshot_date) AS max_date
-                          FROM {local_ace_analytics}
+                          FROM {local_aceengine_analytics}
                          WHERE courseid = :courseid2
                            AND snapshot_date >= :starttime2
                       GROUP BY userid

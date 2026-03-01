@@ -21,7 +21,7 @@
  * enrolled students in a course, including all sub-factors used
  * in the dropout risk algorithm.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,13 +36,13 @@ $context = context_course::instance($courseid);
 require_login($course);
 require_capability('local/ace:viewanalytics', $context);
 
-$PAGE->set_url(new moodle_url('/local/ace/analytics.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/local/aceengine/analytics.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('analytics', 'local_ace'));
+$PAGE->set_title(get_string('analytics', 'local_aceengine'));
 $PAGE->set_heading($course->fullname);
 $PAGE->set_pagelayout('incourse');
-$PAGE->set_secondary_active_tab('local_ace_analytics');
-$PAGE->navbar->add(get_string('analytics', 'local_ace'));
+$PAGE->set_secondary_active_tab('local_aceengine_analytics');
+$PAGE->navbar->add(get_string('analytics', 'local_aceengine'));
 
 $PAGE->add_body_class('local-ace-analytics-page');
 
@@ -59,10 +59,10 @@ $filtertrend = optional_param('ftrend', '', PARAM_ALPHA);
 $filterengage = optional_param('fengage', '', PARAM_ALPHA);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('analytics', 'local_ace'));
+echo $OUTPUT->heading(get_string('analytics', 'local_aceengine'));
 
 // Filters bar.
-$filterurl = new moodle_url('/local/ace/analytics.php', ['courseid' => $courseid]);
+$filterurl = new moodle_url('/local/aceengine/analytics.php', ['courseid' => $courseid]);
 echo '<form method="get" action="' . $filterurl . '" class="card card-body mb-3">';
 echo '<input type="hidden" name="courseid" value="' . $courseid . '">';
 echo '<div class="row align-items-end">';
@@ -72,31 +72,31 @@ echo '<input type="text" name="fname" class="form-control form-control-sm" value
     s($filtername) . '" placeholder="' . get_string('fullname') . '">';
 echo '</div>';
 echo '<div class="col-md-2 mb-2">';
-echo '<label class="form-label small">' . get_string('analytics_dropout', 'local_ace') . '</label>';
+echo '<label class="form-label small">' . get_string('analytics_dropout', 'local_aceengine') . '</label>';
 echo '<select name="frisk" class="form-control form-control-sm">';
 echo '<option value="">' . get_string('all') . '</option>';
 echo '<option value="low"' . ($filterrisk === 'low' ? ' selected' : '') . '>' .
-    get_string('dropoutrisk_low', 'local_ace') . '</option>';
+    get_string('dropoutrisk_low', 'local_aceengine') . '</option>';
 echo '<option value="medium"' . ($filterrisk === 'medium' ? ' selected' : '') . '>' .
-    get_string('dropoutrisk_medium', 'local_ace') . '</option>';
+    get_string('dropoutrisk_medium', 'local_aceengine') . '</option>';
 echo '<option value="high"' . ($filterrisk === 'high' ? ' selected' : '') . '>' .
-    get_string('dropoutrisk_high', 'local_ace') . '</option>';
+    get_string('dropoutrisk_high', 'local_aceengine') . '</option>';
 echo '<option value="critical"' . ($filterrisk === 'critical' ? ' selected' : '') . '>' .
-    get_string('dropoutrisk_critical', 'local_ace') . '</option>';
+    get_string('dropoutrisk_critical', 'local_aceengine') . '</option>';
 echo '</select></div>';
 echo '<div class="col-md-2 mb-2">';
-echo '<label class="form-label small">' . get_string('analytics_trend', 'local_ace') . '</label>';
+echo '<label class="form-label small">' . get_string('analytics_trend', 'local_aceengine') . '</label>';
 echo '<select name="ftrend" class="form-control form-control-sm">';
 echo '<option value="">' . get_string('all') . '</option>';
 echo '<option value="improving"' . ($filtertrend === 'improving' ? ' selected' : '') . '>' .
-    get_string('engagementtrend_improving', 'local_ace') . '</option>';
+    get_string('engagementtrend_improving', 'local_aceengine') . '</option>';
 echo '<option value="stable"' . ($filtertrend === 'stable' ? ' selected' : '') . '>' .
-    get_string('engagementtrend_stable', 'local_ace') . '</option>';
+    get_string('engagementtrend_stable', 'local_aceengine') . '</option>';
 echo '<option value="declining"' . ($filtertrend === 'declining' ? ' selected' : '') . '>' .
-    get_string('engagementtrend_declining', 'local_ace') . '</option>';
+    get_string('engagementtrend_declining', 'local_aceengine') . '</option>';
 echo '</select></div>';
 echo '<div class="col-md-2 mb-2">';
-echo '<label class="form-label small">' . get_string('engagementscore', 'local_ace') . '</label>';
+echo '<label class="form-label small">' . get_string('engagementscore', 'local_aceengine') . '</label>';
 echo '<select name="fengage" class="form-control form-control-sm">';
 echo '<option value="">' . get_string('all') . '</option>';
 echo '<option value="low"' . ($filterengage === 'low' ? ' selected' : '') . '>0-40%</option>';
@@ -126,29 +126,29 @@ if (empty($enrolledusers)) {
 }
 
 // Initialize the dropout predictor.
-$predictor = new \local_ace\analytics\dropout_predictor();
+$predictor = new \local_aceengine\analytics\dropout_predictor();
 
 // Build the analytics data table with all dropout risk sub-factors.
 $table = new html_table();
 $table->attributes['class'] = 'table table-striped table-hover local-ace-analytics-table';
 $table->head = [
     get_string('fullname'),
-    get_string('analytics_lastaccess', 'local_ace'),
+    get_string('analytics_lastaccess', 'local_aceengine'),
     // Engagement sub-scores.
-    get_string('engagementscore', 'local_ace'),
-    get_string('analytics_completion', 'local_ace'),
-    get_string('analytics_timeliness', 'local_ace'),
-    get_string('analytics_participation', 'local_ace'),
-    get_string('analytics_consistency', 'local_ace'),
-    get_string('analytics_trend', 'local_ace'),
+    get_string('engagementscore', 'local_aceengine'),
+    get_string('analytics_completion', 'local_aceengine'),
+    get_string('analytics_timeliness', 'local_aceengine'),
+    get_string('analytics_participation', 'local_aceengine'),
+    get_string('analytics_consistency', 'local_aceengine'),
+    get_string('analytics_trend', 'local_aceengine'),
     // Mastery sub-scores.
-    get_string('masteryscore', 'local_ace'),
-    get_string('analytics_grades', 'local_ace'),
-    get_string('analytics_improvement', 'local_ace'),
-    get_string('analytics_breadth', 'local_ace'),
+    get_string('masteryscore', 'local_aceengine'),
+    get_string('analytics_grades', 'local_aceengine'),
+    get_string('analytics_improvement', 'local_aceengine'),
+    get_string('analytics_breadth', 'local_aceengine'),
     // Summary.
-    get_string('completedquests', 'local_ace'),
-    get_string('analytics_dropout', 'local_ace'),
+    get_string('completedquests', 'local_aceengine'),
+    get_string('analytics_dropout', 'local_aceengine'),
 ];
 $tablealign = ['left', 'center', 'center', 'center', 'center', 'center', 'center', 'center',
                  'center', 'center', 'center', 'center', 'center', 'center'];
@@ -165,7 +165,7 @@ $totalcount = count($enrolledusers);
 
 foreach ($enrolledusers as $user) {
     // Load engagement data (includes sub-scores and trend).
-    $engagement = $DB->get_record('local_ace_engagement', [
+    $engagement = $DB->get_record('local_aceengine_engagement', [
         'userid' => $user->id,
         'courseid' => $courseid,
     ]);
@@ -209,18 +209,18 @@ foreach ($enrolledusers as $user) {
     $trendlabel = '-';
     if ($trend === 'improving') {
         $trendclass = 'badge-success';
-        $trendlabel = get_string('engagementtrend_improving', 'local_ace');
+        $trendlabel = get_string('engagementtrend_improving', 'local_aceengine');
     } else if ($trend === 'stable') {
         $trendclass = 'badge-info';
-        $trendlabel = get_string('engagementtrend_stable', 'local_ace');
+        $trendlabel = get_string('engagementtrend_stable', 'local_aceengine');
     } else if ($trend === 'declining') {
         $trendclass = 'badge-danger';
-        $trendlabel = get_string('engagementtrend_declining', 'local_ace');
+        $trendlabel = get_string('engagementtrend_declining', 'local_aceengine');
     }
     $trendhtml = html_writer::span($trendlabel, 'badge ' . $trendclass);
 
     // Load mastery data (includes sub-scores).
-    $mastery = $DB->get_record('local_ace_mastery', [
+    $mastery = $DB->get_record('local_aceengine_mastery', [
         'userid' => $user->id,
         'courseid' => $courseid,
     ]);
@@ -250,7 +250,7 @@ foreach ($enrolledusers as $user) {
     }
 
     // Count completed quests.
-    $completedcount = $DB->count_records('local_ace_quests', [
+    $completedcount = $DB->count_records('local_aceengine_quests', [
         'userid' => $user->id,
         'courseid' => $courseid,
         'status' => 'completed',
@@ -342,13 +342,13 @@ if ($filteredcount === 0) {
 // Legend explaining the dropout risk factors.
 echo html_writer::start_tag('div', ['class' => 'card mt-3']);
 echo html_writer::start_tag('div', ['class' => 'card-body']);
-echo html_writer::tag('h5', get_string('analytics_dropout_factors', 'local_ace'), ['class' => 'card-title']);
-echo html_writer::tag('p', get_string('analytics_dropout_factors_desc', 'local_ace'));
+echo html_writer::tag('h5', get_string('analytics_dropout_factors', 'local_aceengine'), ['class' => 'card-title']);
+echo html_writer::tag('p', get_string('analytics_dropout_factors_desc', 'local_aceengine'));
 echo html_writer::start_tag('ul');
-echo html_writer::tag('li', get_string('analytics_factor_inactivity', 'local_ace'));
-echo html_writer::tag('li', get_string('analytics_factor_engagement', 'local_ace'));
-echo html_writer::tag('li', get_string('analytics_factor_completion', 'local_ace'));
-echo html_writer::tag('li', get_string('analytics_factor_grades', 'local_ace'));
+echo html_writer::tag('li', get_string('analytics_factor_inactivity', 'local_aceengine'));
+echo html_writer::tag('li', get_string('analytics_factor_engagement', 'local_aceengine'));
+echo html_writer::tag('li', get_string('analytics_factor_completion', 'local_aceengine'));
+echo html_writer::tag('li', get_string('analytics_factor_grades', 'local_aceengine'));
 echo html_writer::end_tag('ul');
 echo html_writer::end_tag('div');
 echo html_writer::end_tag('div');

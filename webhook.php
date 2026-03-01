@@ -22,7 +22,7 @@
  *
  * Security: Verified via HMAC-SHA256 signature using the license key as secret.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -50,7 +50,7 @@ if (!is_array($data) || empty($data['license_key'])) {
 }
 
 // Verify the signature using the license key as HMAC secret.
-$licensekey = get_config('local_ace', 'licensekey');
+$licensekey = get_config('local_aceengine', 'licensekey');
 if (empty($licensekey) || $data['license_key'] !== $licensekey) {
     http_response_code(403);
     echo json_encode(['error' => 'Invalid license key']);
@@ -71,7 +71,7 @@ if (!hash_equals($expectedsig, $signature)) {
 
 // Update the local license cache.
 $now = time();
-$record = $DB->get_record('local_ace_license', ['licensekey' => $licensekey]);
+$record = $DB->get_record('local_aceengine_license', ['licensekey' => $licensekey]);
 
 $updatedata = [];
 if (isset($data['credits_remaining'])) {
@@ -94,14 +94,14 @@ if ($record && !empty($updatedata)) {
     $updatedata['timemodified'] = $now;
     $updatedata['lastcheck'] = $now;
     $updatedata['id'] = $record->id;
-    $DB->update_record('local_ace_license', (object) $updatedata);
+    $DB->update_record('local_aceengine_license', (object) $updatedata);
 } else if (!$record && !empty($updatedata)) {
     $updatedata['licensekey'] = $licensekey;
     $updatedata['domain'] = parse_url($CFG->wwwroot, PHP_URL_HOST);
     $updatedata['timecreated'] = $now;
     $updatedata['timemodified'] = $now;
     $updatedata['lastcheck'] = $now;
-    $DB->insert_record('local_ace_license', (object) $updatedata);
+    $DB->insert_record('local_aceengine_license', (object) $updatedata);
 }
 
 // Purge the MUC cache so Pro features re-check license status immediately.

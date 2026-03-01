@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 /**
  * Tests for the engagement_scorer class.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers     \local_ace\engagement_scorer
+ * @covers     \local_aceengine\engagement_scorer
  */
 final class engagement_scorer_test extends \advanced_testcase {
     /**
@@ -167,7 +167,7 @@ final class engagement_scorer_test extends \advanced_testcase {
             'consistency_score' => 60.0,
         ]);
 
-        $record = $DB->get_record('local_ace_engagement', [
+        $record = $DB->get_record('local_aceengine_engagement', [
             'userid' => $user->id,
             'courseid' => $course->id,
         ]);
@@ -201,7 +201,7 @@ final class engagement_scorer_test extends \advanced_testcase {
         // Second save with higher score (should be "improving").
         $scorer->save_score($user->id, $course->id, 80.0, $components);
 
-        $record = $DB->get_record('local_ace_engagement', [
+        $record = $DB->get_record('local_aceengine_engagement', [
             'userid' => $user->id,
             'courseid' => $course->id,
         ]);

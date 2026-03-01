@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 /**
  * Mastery scorer class for calculating mastery scores.
  *
  * Calculates a weighted average of grade performance, improvement trend,
  * and breadth of activity completion for a user in a given course.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,11 +51,11 @@ class mastery_scorer {
         $improvementscore = $this->get_improvement_score($userid, $courseid);
         $breadthscore = $this->get_breadth_score($userid, $courseid);
 
-        $wgrades = (float) get_config('local_ace', 'masteryweight_grades')
+        $wgrades = (float) get_config('local_aceengine', 'masteryweight_grades')
             ?: self::DEFAULT_WEIGHT_GRADES;
-        $wimprovement = (float) get_config('local_ace', 'masteryweight_improvement')
+        $wimprovement = (float) get_config('local_aceengine', 'masteryweight_improvement')
             ?: self::DEFAULT_WEIGHT_IMPROVEMENT;
-        $wbreadth = (float) get_config('local_ace', 'masteryweight_breadth')
+        $wbreadth = (float) get_config('local_aceengine', 'masteryweight_breadth')
             ?: self::DEFAULT_WEIGHT_BREADTH;
 
         $totalweight = $wgrades + $wimprovement + $wbreadth;
@@ -273,7 +273,7 @@ class mastery_scorer {
      * Save the mastery score and components to the database.
      *
      * Inserts a new record or updates the existing record for the
-     * user/course pair in the local_ace_mastery table.
+     * user/course pair in the local_aceengine_mastery table.
      *
      * @param int   $userid     The ID of the user.
      * @param int   $courseid   The ID of the course.
@@ -286,7 +286,7 @@ class mastery_scorer {
 
         $now = time();
 
-        $existing = $DB->get_record('local_ace_mastery', [
+        $existing = $DB->get_record('local_aceengine_mastery', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -302,10 +302,10 @@ class mastery_scorer {
 
         if ($existing) {
             $record->id = $existing->id;
-            $DB->update_record('local_ace_mastery', $record);
+            $DB->update_record('local_aceengine_mastery', $record);
         } else {
             $record->timecreated = $now;
-            $DB->insert_record('local_ace_mastery', $record);
+            $DB->insert_record('local_aceengine_mastery', $record);
         }
     }
 }

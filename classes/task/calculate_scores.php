@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\task;
+namespace local_aceengine\task;
 
 use core\task\scheduled_task;
 use context_course;
@@ -24,7 +24,7 @@ use context_course;
  * Iterates over all visible courses and enrolled users, recalculates
  * engagement and mastery scores, and saves analytics snapshots.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,7 +35,7 @@ class calculate_scores extends scheduled_task {
      * @return string The localised task name.
      */
     public function get_name(): string {
-        return get_string('task_calculate_scores', 'local_ace');
+        return get_string('task_calculate_scores', 'local_aceengine');
     }
 
     /**
@@ -50,9 +50,9 @@ class calculate_scores extends scheduled_task {
     public function execute(): void {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot . '/local/ace/lib.php');
+        require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             mtrace('ACE plugin is disabled. Skipping score calculation.');
             return;
         }
@@ -75,7 +75,7 @@ class calculate_scores extends scheduled_task {
             }
 
             // Respect per-course enable setting.
-            if (!\local_ace_is_enabled_for_course($course->id)) {
+            if (!\local_aceengine_is_enabled_for_course($course->id)) {
                 continue;
             }
 
@@ -107,7 +107,7 @@ class calculate_scores extends scheduled_task {
                 $dropoutrisk = self::calculate_dropout_risk($engagementdata['score'], $masterydata['score']);
 
                 // Save analytics snapshot.
-                $DB->insert_record('local_ace_analytics', (object) [
+                $DB->insert_record('local_aceengine_analytics', (object) [
                     'userid' => $user->id,
                     'courseid' => $course->id,
                     'engagement_score' => $engagementdata['score'],
@@ -131,10 +131,10 @@ class calculate_scores extends scheduled_task {
      */
     private static function get_engagement_weights(): array {
         return [
-            'completion' => (float) (get_config('local_ace', 'engagementweight_completion') ?: 25),
-            'timeliness' => (float) (get_config('local_ace', 'engagementweight_timeliness') ?: 25),
-            'participation' => (float) (get_config('local_ace', 'engagementweight_participation') ?: 25),
-            'consistency' => (float) (get_config('local_ace', 'engagementweight_consistency') ?: 25),
+            'completion' => (float) (get_config('local_aceengine', 'engagementweight_completion') ?: 25),
+            'timeliness' => (float) (get_config('local_aceengine', 'engagementweight_timeliness') ?: 25),
+            'participation' => (float) (get_config('local_aceengine', 'engagementweight_participation') ?: 25),
+            'consistency' => (float) (get_config('local_aceengine', 'engagementweight_consistency') ?: 25),
         ];
     }
 
@@ -145,9 +145,9 @@ class calculate_scores extends scheduled_task {
      */
     private static function get_mastery_weights(): array {
         return [
-            'grades' => (float) (get_config('local_ace', 'masteryweight_grades') ?: 40),
-            'improvement' => (float) (get_config('local_ace', 'masteryweight_improvement') ?: 30),
-            'breadth' => (float) (get_config('local_ace', 'masteryweight_breadth') ?: 30),
+            'grades' => (float) (get_config('local_aceengine', 'masteryweight_grades') ?: 40),
+            'improvement' => (float) (get_config('local_aceengine', 'masteryweight_improvement') ?: 30),
+            'breadth' => (float) (get_config('local_aceengine', 'masteryweight_breadth') ?: 30),
         ];
     }
 
@@ -197,7 +197,7 @@ class calculate_scores extends scheduled_task {
         $score = round(min(100, max(0, $score)), 4);
 
         // Determine trend based on previous score.
-        $previousscore = $DB->get_field('local_ace_engagement', 'score', [
+        $previousscore = $DB->get_field('local_aceengine_engagement', 'score', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -520,13 +520,13 @@ class calculate_scores extends scheduled_task {
     private static function save_engagement_score(int $userid, int $courseid, array $data, int $now): void {
         global $DB;
 
-        $existing = $DB->get_record('local_ace_engagement', [
+        $existing = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
 
         if ($existing) {
-            $DB->update_record('local_ace_engagement', (object) [
+            $DB->update_record('local_aceengine_engagement', (object) [
                 'id' => $existing->id,
                 'score' => $data['score'],
                 'completion_score' => $data['completion'],
@@ -537,7 +537,7 @@ class calculate_scores extends scheduled_task {
                 'timemodified' => $now,
             ]);
         } else {
-            $DB->insert_record('local_ace_engagement', (object) [
+            $DB->insert_record('local_aceengine_engagement', (object) [
                 'userid' => $userid,
                 'courseid' => $courseid,
                 'score' => $data['score'],
@@ -564,13 +564,13 @@ class calculate_scores extends scheduled_task {
     private static function save_mastery_score(int $userid, int $courseid, array $data, int $now): void {
         global $DB;
 
-        $existing = $DB->get_record('local_ace_mastery', [
+        $existing = $DB->get_record('local_aceengine_mastery', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
 
         if ($existing) {
-            $DB->update_record('local_ace_mastery', (object) [
+            $DB->update_record('local_aceengine_mastery', (object) [
                 'id' => $existing->id,
                 'score' => $data['score'],
                 'grade_score' => $data['grade'],
@@ -579,7 +579,7 @@ class calculate_scores extends scheduled_task {
                 'timemodified' => $now,
             ]);
         } else {
-            $DB->insert_record('local_ace_mastery', (object) [
+            $DB->insert_record('local_aceengine_mastery', (object) [
                 'userid' => $userid,
                 'courseid' => $courseid,
                 'score' => $data['score'],

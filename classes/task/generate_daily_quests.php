@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\task;
+namespace local_aceengine\task;
 
 use core\task\scheduled_task;
 use context_course;
-use local_ace\notification_manager;
+use local_aceengine\notification_manager;
 /**
  * Scheduled task to generate daily quests for all enrolled users.
  *
  * Iterates over all visible courses, finds users with the viewdashboard
  * capability, and generates daily quests for each user-course pair.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,7 +36,7 @@ class generate_daily_quests extends scheduled_task {
      * @return string The localised task name.
      */
     public function get_name(): string {
-        return get_string('task_generate_daily_quests', 'local_ace');
+        return get_string('task_generate_daily_quests', 'local_aceengine');
     }
 
     /**
@@ -51,27 +51,27 @@ class generate_daily_quests extends scheduled_task {
     public function execute(): void {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot . '/local/ace/lib.php');
+        require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             mtrace('ACE plugin is disabled. Skipping daily quest generation.');
             return;
         }
 
-        $dailyquestcount = (int) get_config('local_ace', 'dailyquestcount');
+        $dailyquestcount = (int) get_config('local_aceengine', 'dailyquestcount');
         if ($dailyquestcount <= 0) {
             $dailyquestcount = 3;
         }
 
         // Expire stale quests before generating new ones.
         $expiredcount = $DB->count_records_select(
-            'local_ace_quests',
+            'local_aceengine_quests',
             'status = :status AND expirydate < :now',
             ['status' => 'active', 'now' => time()]
         );
         if ($expiredcount > 0) {
             $DB->execute(
-                "UPDATE {local_ace_quests} SET status = 'expired', timemodified = :now
+                "UPDATE {local_aceengine_quests} SET status = 'expired', timemodified = :now
                   WHERE status = 'active' AND expirydate < :expiry",
                 ['now' => time(), 'expiry' => time()]
             );
@@ -90,7 +90,7 @@ class generate_daily_quests extends scheduled_task {
             }
 
             // Respect per-course enable setting.
-            if (!\local_ace_is_enabled_for_course($course->id)) {
+            if (!\local_aceengine_is_enabled_for_course($course->id)) {
                 continue;
             }
 
@@ -150,7 +150,7 @@ class generate_daily_quests extends scheduled_task {
 
         // Get existing active quest types to avoid duplicates.
         $existingtypes = $DB->get_fieldset_select(
-            'local_ace_quests',
+            'local_aceengine_quests',
             'questtype',
             'userid = :userid AND courseid = :courseid AND status = :status',
             ['userid' => $userid, 'courseid' => $courseid, 'status' => 'active']
@@ -204,9 +204,9 @@ class generate_daily_quests extends scheduled_task {
         }
 
         // Use adaptive engine for difficulty (instead of random).
-        $adaptiveengine = new \local_ace\adaptive_engine();
+        $adaptiveengine = new \local_aceengine\adaptive_engine();
 
-        $xpperquest = (int) get_config('local_ace', 'xp_per_quest');
+        $xpperquest = (int) get_config('local_aceengine', 'xp_per_quest');
         if ($xpperquest <= 0) {
             $xpperquest = 50;
         }
@@ -214,12 +214,12 @@ class generate_daily_quests extends scheduled_task {
         // Force English for stored quest titles (displayed via type badge in user's language).
         $sm = get_string_manager();
         $questtitles = [
-            'activity' => $sm->get_string('questtype_activity', 'local_ace', null, 'en'),
-            'forum' => $sm->get_string('questtype_forum', 'local_ace', null, 'en'),
-            'quiz' => $sm->get_string('questtype_quiz', 'local_ace', null, 'en'),
-            'resource' => $sm->get_string('questtype_resource', 'local_ace', null, 'en'),
-            'login' => $sm->get_string('questtype_login', 'local_ace', null, 'en'),
-            'grade' => $sm->get_string('questtype_grade', 'local_ace', null, 'en'),
+            'activity' => $sm->get_string('questtype_activity', 'local_aceengine', null, 'en'),
+            'forum' => $sm->get_string('questtype_forum', 'local_aceengine', null, 'en'),
+            'quiz' => $sm->get_string('questtype_quiz', 'local_aceengine', null, 'en'),
+            'resource' => $sm->get_string('questtype_resource', 'local_aceengine', null, 'en'),
+            'login' => $sm->get_string('questtype_login', 'local_aceengine', null, 'en'),
+            'grade' => $sm->get_string('questtype_grade', 'local_aceengine', null, 'en'),
         ];
 
         $generatedquests = [];
@@ -263,7 +263,7 @@ class generate_daily_quests extends scheduled_task {
             $quest->timecreated = $now;
             $quest->timemodified = $now;
 
-            $quest->id = $DB->insert_record('local_ace_quests', $quest);
+            $quest->id = $DB->insert_record('local_aceengine_quests', $quest);
             $generatedquests[] = $quest;
             $generated++;
         }
@@ -288,7 +288,7 @@ class generate_daily_quests extends scheduled_task {
      */
     private static function send_recommendation_notification(int $userid, int $courseid): void {
         try {
-            $dashboard = new \local_ace\output\dashboard($userid, $courseid);
+            $dashboard = new \local_aceengine\output\dashboard($userid, $courseid);
             $reccount = count($dashboard->recommendations);
             if ($reccount > 0) {
                 notification_manager::notify_recommendations($userid, $courseid, $reccount);
@@ -408,7 +408,7 @@ class generate_daily_quests extends scheduled_task {
                 ], IGNORE_MULTIPLE);
                 if ($record) {
                     return [
-                        'title' => $sm->get_string('questtype_quiz', 'local_ace', null, 'en') . ': ' . $record->name,
+                        'title' => $sm->get_string('questtype_quiz', 'local_aceengine', null, 'en') . ': ' . $record->name,
                         'description' => '',
                         'targetid' => (int) $record->cmid,
                         'targetvalue' => null,
@@ -429,7 +429,7 @@ class generate_daily_quests extends scheduled_task {
                 ], IGNORE_MULTIPLE);
                 if ($record) {
                     return [
-                        'title' => $sm->get_string('questtype_forum', 'local_ace', null, 'en') . ': ' . $record->name,
+                        'title' => $sm->get_string('questtype_forum', 'local_aceengine', null, 'en') . ': ' . $record->name,
                         'description' => '',
                         'targetid' => (int) $record->cmid,
                         'targetvalue' => null,
@@ -456,7 +456,7 @@ class generate_daily_quests extends scheduled_task {
                 if ($cm) {
                     // Get the activity name from its module table.
                     $actname = $DB->get_field($cm->modname, 'name', ['id' => $cm->instance]);
-                    $title = $sm->get_string('questtype_activity', 'local_ace', null, 'en');
+                    $title = $sm->get_string('questtype_activity', 'local_aceengine', null, 'en');
                     if ($actname) {
                         $title .= ': ' . $actname;
                     }
@@ -483,7 +483,7 @@ class generate_daily_quests extends scheduled_task {
                 ], IGNORE_MULTIPLE);
                 if ($cm) {
                     $actname = $DB->get_field($cm->modname, 'name', ['id' => $cm->instance]);
-                    $title = $sm->get_string('questtype_resource', 'local_ace', null, 'en');
+                    $title = $sm->get_string('questtype_resource', 'local_aceengine', null, 'en');
                     if ($actname) {
                         $title .= ': ' . $actname;
                     }
@@ -510,7 +510,7 @@ class generate_daily_quests extends scheduled_task {
                     'courseid' => $courseid,
                 ], IGNORE_MULTIPLE);
                 if ($record) {
-                    $title = $sm->get_string('questtype_grade', 'local_ace', null, 'en');
+                    $title = $sm->get_string('questtype_grade', 'local_aceengine', null, 'en');
                     if ($record->itemname) {
                         $title .= ': ' . $record->itemname;
                     }
@@ -526,7 +526,7 @@ class generate_daily_quests extends scheduled_task {
             case 'login':
                 // Login quests don't target a specific activity.
                 return [
-                    'title' => $sm->get_string('questtype_login', 'local_ace', null, 'en'),
+                    'title' => $sm->get_string('questtype_login', 'local_aceengine', null, 'en'),
                     'description' => '',
                     'targetid' => null,
                     'targetvalue' => null,

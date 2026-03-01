@@ -19,7 +19,7 @@
  *
  * Allows teachers to enable or disable ACE for their course.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -35,30 +35,30 @@ $context = context_course::instance($courseid);
 require_login($course);
 require_capability('local/ace:managequests', $context);
 
-$PAGE->set_url(new moodle_url('/local/ace/course_config.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/local/aceengine/course_config.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('courseconfig', 'local_ace'));
+$PAGE->set_title(get_string('courseconfig', 'local_aceengine'));
 $PAGE->set_heading($course->fullname);
 $PAGE->set_pagelayout('incourse');
-$PAGE->set_secondary_active_tab('local_ace_course_config');
-$PAGE->navbar->add(get_string('courseconfig', 'local_ace'));
+$PAGE->set_secondary_active_tab('local_aceengine_course_config');
+$PAGE->navbar->add(get_string('courseconfig', 'local_aceengine'));
 
 // Build the form.
 $mform = new MoodleQuickForm(
-    'local_ace_course_config',
+    'local_aceengine_course_config',
     'post',
-    new moodle_url('/local/ace/course_config.php', ['courseid' => $courseid])
+    new moodle_url('/local/aceengine/course_config.php', ['courseid' => $courseid])
 );
 
-$mform->addElement('header', 'acesettings', get_string('courseconfig', 'local_ace'));
+$mform->addElement('header', 'acesettings', get_string('courseconfig', 'local_aceengine'));
 
-$currentenabled = (bool) get_config('local_ace', 'ace_course_enabled_' . $courseid);
+$currentenabled = (bool) get_config('local_aceengine', 'ace_course_enabled_' . $courseid);
 
 $mform->addElement(
     'advcheckbox',
     'enabled',
-    get_string('courseconfig_enable', 'local_ace'),
-    get_string('courseconfig_enable_desc', 'local_ace')
+    get_string('courseconfig_enable', 'local_aceengine'),
+    get_string('courseconfig_enable_desc', 'local_aceengine')
 );
 $mform->setDefault('enabled', $currentenabled ? 1 : 0);
 
@@ -69,10 +69,10 @@ if ($data = $mform->exportValues()) {
     if (optional_param('submitbutton', '', PARAM_TEXT) !== '') {
         require_sesskey();
         $enabled = !empty($data['enabled']) ? 1 : 0;
-        set_config('ace_course_enabled_' . $courseid, $enabled, 'local_ace');
+        set_config('ace_course_enabled_' . $courseid, $enabled, 'local_aceengine');
         redirect(
-            new moodle_url('/local/ace/course_config.php', ['courseid' => $courseid]),
-            get_string('courseconfig_saved', 'local_ace'),
+            new moodle_url('/local/aceengine/course_config.php', ['courseid' => $courseid]),
+            get_string('courseconfig_saved', 'local_aceengine'),
             null,
             \core\output\notification::NOTIFY_SUCCESS
         );
@@ -80,11 +80,11 @@ if ($data = $mform->exportValues()) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('courseconfig', 'local_ace'));
+echo $OUTPUT->heading(get_string('courseconfig', 'local_aceengine'));
 
-$mode = get_config('local_ace', 'enablemode');
+$mode = get_config('local_aceengine', 'enablemode');
 if ($mode !== 'percourse') {
-    echo $OUTPUT->notification(get_string('courseconfig_globalmode', 'local_ace'), \core\output\notification::NOTIFY_INFO);
+    echo $OUTPUT->notification(get_string('courseconfig_globalmode', 'local_aceengine'), \core\output\notification::NOTIFY_INFO);
 }
 
 $mform->display();

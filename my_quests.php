@@ -17,7 +17,7 @@
 /**
  * My Quests page — shows all quests across all courses.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,19 +26,19 @@ require_once(__DIR__ . '/../../config.php');
 
 require_login();
 
-$PAGE->set_url(new moodle_url('/local/ace/my_quests.php'));
+$PAGE->set_url(new moodle_url('/local/aceengine/my_quests.php'));
 $PAGE->set_context(context_system::instance());
-$PAGE->set_title(get_string('myquests', 'local_ace'));
-$PAGE->set_heading(get_string('myquests', 'local_ace'));
+$PAGE->set_title(get_string('myquests', 'local_aceengine'));
+$PAGE->set_heading(get_string('myquests', 'local_aceengine'));
 $PAGE->set_pagelayout('standard');
 
-$PAGE->navbar->add(get_string('myquests', 'local_ace'));
+$PAGE->navbar->add(get_string('myquests', 'local_aceengine'));
 $PAGE->add_body_class('local-ace-myquests-page');
 
-$myquests = new \local_ace\output\my_quests($USER->id);
+$myquests = new \local_aceengine\output\my_quests($USER->id);
 
-/** @var \local_ace\output\renderer $renderer */
-$renderer = $PAGE->get_renderer('local_ace');
+/** @var \local_aceengine\output\renderer $renderer */
+$renderer = $PAGE->get_renderer('local_aceengine');
 
 echo $OUTPUT->header();
 echo $renderer->render_my_quests($myquests);

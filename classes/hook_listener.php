@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 use core_course\hook\after_form_definition;
 use core_course\hook\after_form_definition_after_data;
 use core_course\hook\after_form_submission;
 
 /**
- * Hook listener for local_ace.
+ * Hook listener for local_aceengine.
  *
  * Hooks into the course edit form to add ACE enable/disable toggle.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -36,29 +36,29 @@ class hook_listener {
      * @param after_form_definition $hook The hook instance.
      */
     public static function extend_course_form(after_form_definition $hook): void {
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             return;
         }
 
         $mform = $hook->mform;
 
-        $mform->addElement('header', 'local_ace_header', get_string('pluginname', 'local_ace'));
+        $mform->addElement('header', 'local_aceengine_header', get_string('pluginname', 'local_aceengine'));
 
         $mform->addElement(
             'advcheckbox',
-            'local_ace_enabled',
-            get_string('courseconfig_enable', 'local_ace'),
-            get_string('courseconfig_enable_desc', 'local_ace')
+            'local_aceengine_enabled',
+            get_string('courseconfig_enable', 'local_aceengine'),
+            get_string('courseconfig_enable_desc', 'local_aceengine')
         );
-        $mform->setDefault('local_ace_enabled', 0);
+        $mform->setDefault('local_aceengine_enabled', 0);
 
-        $mode = get_config('local_ace', 'enablemode');
+        $mode = get_config('local_aceengine', 'enablemode');
         if ($mode !== 'percourse') {
             $mform->addElement(
                 'static',
-                'local_ace_globalinfo',
+                'local_aceengine_globalinfo',
                 '',
-                get_string('courseconfig_globalmode', 'local_ace')
+                get_string('courseconfig_globalmode', 'local_aceengine')
             );
         }
     }
@@ -69,7 +69,7 @@ class hook_listener {
      * @param after_form_definition_after_data $hook The hook instance.
      */
     public static function set_course_form_defaults(after_form_definition_after_data $hook): void {
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             return;
         }
 
@@ -78,9 +78,9 @@ class hook_listener {
             return;
         }
 
-        $enabled = (bool) get_config('local_ace', 'ace_course_enabled_' . $course->id);
+        $enabled = (bool) get_config('local_aceengine', 'ace_course_enabled_' . $course->id);
         $mform = $hook->mform;
-        $el = $mform->getElement('local_ace_enabled');
+        $el = $mform->getElement('local_aceengine_enabled');
         if ($el) {
             $el->setValue($enabled ? 1 : 0);
         }
@@ -92,7 +92,7 @@ class hook_listener {
      * @param after_form_submission $hook The hook instance.
      */
     public static function save_course_form(after_form_submission $hook): void {
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             return;
         }
 
@@ -101,7 +101,7 @@ class hook_listener {
             return;
         }
 
-        $enabled = !empty($data->local_ace_enabled) ? 1 : 0;
-        set_config('ace_course_enabled_' . $data->id, $enabled, 'local_ace');
+        $enabled = !empty($data->local_aceengine_enabled) ? 1 : 0;
+        set_config('ace_course_enabled_' . $data->id, $enabled, 'local_aceengine');
     }
 }

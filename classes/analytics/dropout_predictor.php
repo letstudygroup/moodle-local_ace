@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Dropout risk predictor for local_ace.
+ * Dropout risk predictor for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\analytics;
+namespace local_aceengine\analytics;
 
 /**
  * Calculates dropout risk scores for users in a course.
@@ -34,7 +34,7 @@ namespace local_ace\analytics;
  *   risk = (0.4 * inactivity_factor) + (0.3 * engagement_decline_factor)
  *        + (0.2 * completion_gap_factor) + (0.1 * grade_decline_factor)
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -84,13 +84,13 @@ class dropout_predictor {
      */
     public function get_risk_label(float $score): string {
         if ($score < 0.25) {
-            return get_string('dropoutrisk_low', 'local_ace');
+            return get_string('dropoutrisk_low', 'local_aceengine');
         } else if ($score < 0.5) {
-            return get_string('dropoutrisk_medium', 'local_ace');
+            return get_string('dropoutrisk_medium', 'local_aceengine');
         } else if ($score < 0.75) {
-            return get_string('dropoutrisk_high', 'local_ace');
+            return get_string('dropoutrisk_high', 'local_aceengine');
         } else {
-            return get_string('dropoutrisk_critical', 'local_ace');
+            return get_string('dropoutrisk_critical', 'local_aceengine');
         }
     }
 
@@ -134,7 +134,7 @@ class dropout_predictor {
     private function calculate_engagement_decline_factor(int $userid, int $courseid): float {
         global $DB;
 
-        $engagement = $DB->get_record('local_ace_engagement', [
+        $engagement = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -243,7 +243,7 @@ class dropout_predictor {
         // Get the two most recent analytics snapshots for this user and course.
         $snapshots = $DB->get_records_sql(
             "SELECT id, mastery_score, snapshot_date
-               FROM {local_ace_analytics}
+               FROM {local_aceengine_analytics}
               WHERE userid = :userid
                 AND courseid = :courseid
               ORDER BY snapshot_date DESC",

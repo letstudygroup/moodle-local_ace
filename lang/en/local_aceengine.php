@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Language strings for local_ace.
+ * Language strings for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -171,12 +171,12 @@ $string['pro_early_access_title'] = 'Early Access — Limited Offer';
 $string['pro_early_access_desc'] = 'Be one of the first to get ACE Pro at the exclusive early access price.';
 $string['pro_early_access_cta'] = 'Reserve Your Spot';
 $string['privacy:metadata:courseid'] = 'The ID of the course.';
-$string['privacy:metadata:local_ace_analytics'] = 'Stores analytics snapshot data.';
-$string['privacy:metadata:local_ace_engagement'] = 'Stores engagement score data for users.';
-$string['privacy:metadata:local_ace_mastery'] = 'Stores mastery score data for users.';
-$string['privacy:metadata:local_ace_quests'] = 'Stores quest assignment and completion data.';
-$string['privacy:metadata:local_ace_team_xp'] = 'Stores team XP contribution data.';
-$string['privacy:metadata:local_ace_xp'] = 'Stores XP and level data for users.';
+$string['privacy:metadata:local_aceengine_analytics'] = 'Stores analytics snapshot data.';
+$string['privacy:metadata:local_aceengine_engagement'] = 'Stores engagement score data for users.';
+$string['privacy:metadata:local_aceengine_mastery'] = 'Stores mastery score data for users.';
+$string['privacy:metadata:local_aceengine_quests'] = 'Stores quest assignment and completion data.';
+$string['privacy:metadata:local_aceengine_team_xp'] = 'Stores team XP contribution data.';
+$string['privacy:metadata:local_aceengine_xp'] = 'Stores XP and level data for users.';
 $string['privacy:metadata:score'] = 'The computed score value.';
 $string['privacy:metadata:timecreated'] = 'The time the record was created.';
 $string['privacy:metadata:timemodified'] = 'The time the record was last modified.';

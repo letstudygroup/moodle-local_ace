@@ -15,33 +15,33 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Uninstall handler for local_ace.
+ * Uninstall handler for local_aceengine.
  *
  * Drops all plugin tables and cleans up configuration data.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Uninstall the local_ace plugin.
+ * Uninstall the local_aceengine plugin.
  *
  * @return bool True on success.
  */
-function xmldb_local_ace_uninstall() {
+function xmldb_local_aceengine_uninstall() {
     global $DB;
 
     $dbman = $DB->get_manager();
 
     // Drop all plugin tables.
     $tables = [
-        'local_ace_engagement',
-        'local_ace_mastery',
-        'local_ace_quests',
-        'local_ace_xp',
-        'local_ace_analytics',
-        'local_ace_license',
+        'local_aceengine_engagement',
+        'local_aceengine_mastery',
+        'local_aceengine_quests',
+        'local_aceengine_xp',
+        'local_aceengine_analytics',
+        'local_aceengine_license',
     ];
 
     foreach ($tables as $tablename) {
@@ -52,7 +52,7 @@ function xmldb_local_ace_uninstall() {
     }
 
     // Clean up all plugin config.
-    unset_all_config_for_plugin('local_ace');
+    unset_all_config_for_plugin('local_aceengine');
 
     return true;
 }

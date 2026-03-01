@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\task;
+namespace local_aceengine\task;
 
 use core\task\scheduled_task;
 /**
@@ -23,7 +23,7 @@ use core\task\scheduled_task;
  * Marks active quests that have passed their expiry date as expired,
  * and deletes analytics snapshot records older than 90 days.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,7 +34,7 @@ class cleanup_expired extends scheduled_task {
      * @return string The localised task name.
      */
     public function get_name(): string {
-        return get_string('task_cleanup_expired', 'local_ace');
+        return get_string('task_cleanup_expired', 'local_aceengine');
     }
 
     /**
@@ -49,7 +49,7 @@ class cleanup_expired extends scheduled_task {
     public function execute(): void {
         global $DB;
 
-        if (!get_config('local_ace', 'enableplugin')) {
+        if (!get_config('local_aceengine', 'enableplugin')) {
             mtrace('ACE plugin is disabled. Skipping cleanup.');
             return;
         }
@@ -76,7 +76,7 @@ class cleanup_expired extends scheduled_task {
 
         // Find active quests with a non-zero expiry date that has passed.
         $sql = "SELECT id
-                  FROM {local_ace_quests}
+                  FROM {local_aceengine_quests}
                  WHERE status = :status
                    AND expirydate > 0
                    AND expirydate < :now";
@@ -98,7 +98,7 @@ class cleanup_expired extends scheduled_task {
         $params['timemodified'] = $now;
 
         $DB->execute(
-            "UPDATE {local_ace_quests}
+            "UPDATE {local_aceengine_quests}
                 SET status = :status,
                     timemodified = :timemodified
               WHERE id {$insql}",
@@ -121,14 +121,14 @@ class cleanup_expired extends scheduled_task {
 
         // Count records before deletion for reporting.
         $count = $DB->count_records_select(
-            'local_ace_analytics',
+            'local_aceengine_analytics',
             'timecreated < :cutoff',
             ['cutoff' => $cutoff]
         );
 
         if ($count > 0) {
             $DB->delete_records_select(
-                'local_ace_analytics',
+                'local_aceengine_analytics',
                 'timecreated < :cutoff',
                 ['cutoff' => $cutoff]
             );

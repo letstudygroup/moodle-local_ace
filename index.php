@@ -19,7 +19,7 @@
  *
  * Main entry point for the Adaptive Challenge Engine student dashboard.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,29 +34,29 @@ $context = context_course::instance($courseid);
 require_login($course);
 require_capability('local/ace:viewdashboard', $context);
 
-$PAGE->set_url(new moodle_url('/local/ace/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/local/aceengine/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('dashboard', 'local_ace'));
+$PAGE->set_title(get_string('dashboard', 'local_aceengine'));
 $PAGE->set_heading($course->fullname);
 $PAGE->set_pagelayout('incourse');
 
 // Set the secondary navigation active tab.
-$PAGE->set_secondary_active_tab('local_ace_dashboard');
+$PAGE->set_secondary_active_tab('local_aceengine_dashboard');
 
 // Add breadcrumb.
-$PAGE->navbar->add(get_string('dashboard', 'local_ace'));
+$PAGE->navbar->add(get_string('dashboard', 'local_aceengine'));
 
 // Add CSS class for namespaced styling.
 $PAGE->add_body_class('local-ace-dashboard-page');
 
 // Load the AMD module for dashboard interactivity.
-$PAGE->requires->js_call_amd('local_ace/dashboard', 'init', [$courseid]);
+$PAGE->requires->js_call_amd('local_aceengine/dashboard', 'init', [$courseid]);
 
 // Create the dashboard renderable with the current user's data.
-$dashboard = new \local_ace\output\dashboard($USER->id, $courseid);
+$dashboard = new \local_aceengine\output\dashboard($USER->id, $courseid);
 
-/** @var \local_ace\output\renderer $renderer */
-$renderer = $PAGE->get_renderer('local_ace');
+/** @var \local_aceengine\output\renderer $renderer */
+$renderer = $PAGE->get_renderer('local_aceengine');
 
 echo $OUTPUT->header();
 echo $renderer->render_dashboard($dashboard);

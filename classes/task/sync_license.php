@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\task;
+namespace local_aceengine\task;
 
 use core\task\scheduled_task;
 /**
@@ -23,7 +23,7 @@ use core\task\scheduled_task;
  * Contacts the configured license server to validate the current license key
  * and updates the local license status cache accordingly.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,7 +34,7 @@ class sync_license extends scheduled_task {
      * @return string The localised task name.
      */
     public function get_name(): string {
-        return get_string('task_sync_license', 'local_ace');
+        return get_string('task_sync_license', 'local_aceengine');
     }
 
     /**
@@ -49,13 +49,13 @@ class sync_license extends scheduled_task {
     public function execute(): void {
         global $CFG, $DB;
 
-        $licensekey = get_config('local_ace', 'licensekey');
+        $licensekey = get_config('local_aceengine', 'licensekey');
         if (empty($licensekey)) {
             mtrace('No license key configured. Skipping license sync.');
             return;
         }
 
-        $licenseserver = \local_ace\licensing\license_manager::LICENSE_SERVER_URL;
+        $licenseserver = \local_aceengine\licensing\license_manager::LICENSE_SERVER_URL;
 
         $now = time();
         $domain = parse_url($CFG->wwwroot, PHP_URL_HOST);
@@ -66,7 +66,7 @@ class sync_license extends scheduled_task {
         $response = self::call_license_server($licenseserver, $licensekey, $domain);
 
         // Get or create the local license record.
-        $license = $DB->get_record('local_ace_license', ['licensekey' => $licensekey]);
+        $license = $DB->get_record('local_aceengine_license', ['licensekey' => $licensekey]);
 
         if ($response === null) {
             // Network or server error - apply grace period logic.
@@ -90,9 +90,9 @@ class sync_license extends scheduled_task {
             $license->credits_total = $creditstotal;
             $license->ai_config = $aiconfig;
             $license->timemodified = $now;
-            $DB->update_record('local_ace_license', $license);
+            $DB->update_record('local_aceengine_license', $license);
         } else {
-            $DB->insert_record('local_ace_license', (object) [
+            $DB->insert_record('local_aceengine_license', (object) [
                 'licensekey' => $licensekey,
                 'domain' => $domain,
                 'status' => $response['status'],
@@ -134,7 +134,7 @@ class sync_license extends scheduled_task {
         $postdata = [
             'license_key' => $licensekey,
             'domain' => $domain,
-            'product' => 'local_ace',
+            'product' => 'local_aceengine',
         ];
 
         $curl = new \curl();
@@ -189,7 +189,7 @@ class sync_license extends scheduled_task {
         if (!$license) {
             // No previous license record; cannot grant grace period.
             mtrace('No existing license record found. License features disabled.');
-            $DB->insert_record('local_ace_license', (object) [
+            $DB->insert_record('local_aceengine_license', (object) [
                 'licensekey' => $licensekey,
                 'domain' => $domain,
                 'status' => 'inactive',
@@ -221,7 +221,7 @@ class sync_license extends scheduled_task {
 
             $license->lastcheck = $now;
             $license->timemodified = $now;
-            $DB->update_record('local_ace_license', $license);
+            $DB->update_record('local_aceengine_license', $license);
         }
     }
 }

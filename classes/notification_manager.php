@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 
 use core\message\message;
 use core_user;
 use moodle_url;
 /**
- * Notification manager for local_ace.
+ * Notification manager for local_aceengine.
  *
  * Handles sending platform and email notifications for quest events.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,19 +51,19 @@ class notification_manager {
         $quest = reset($quests);
         $questcount = count($quests);
         $title = $questcount > 1
-            ? get_string('notification_newquest_subject', 'local_ace', $questcount . ' ' . get_string('dailyquests', 'local_ace'))
-            : get_string('notification_newquest_subject', 'local_ace', $quest->title);
+            ? get_string('notification_newquest_subject', 'local_aceengine', $questcount . ' ' . get_string('dailyquests', 'local_aceengine'))
+            : get_string('notification_newquest_subject', 'local_aceengine', $quest->title);
 
         $a = new \stdClass();
         $a->title = $quest->title;
         $a->xpreward = $quest->xpreward ?? 0;
         $a->coursename = $coursename;
-        $body = get_string('notification_newquest_body', 'local_ace', $a);
+        $body = get_string('notification_newquest_body', 'local_aceengine', $a);
 
-        $dashboardurl = new moodle_url('/local/ace/index.php', ['courseid' => $courseid]);
+        $dashboardurl = new moodle_url('/local/aceengine/index.php', ['courseid' => $courseid]);
 
         $message = new message();
-        $message->component = 'local_ace';
+        $message->component = 'local_aceengine';
         $message->name = 'questgenerated';
         $message->userfrom = core_user::get_noreply_user();
         $message->userto = $user;
@@ -73,7 +73,7 @@ class notification_manager {
         $message->fullmessagehtml = $body;
         $message->smallmessage = $title;
         $message->contexturl = $dashboardurl->out(false);
-        $message->contexturlname = get_string('dashboard', 'local_ace');
+        $message->contexturlname = get_string('dashboard', 'local_aceengine');
         $message->courseid = $courseid;
 
         self::safe_message_send($message);
@@ -102,19 +102,19 @@ class notification_manager {
         }
 
         $coursename = self::get_course_name($courseid);
-        $subject = get_string('notification_questcompleted_subject', 'local_ace', $xpearned);
+        $subject = get_string('notification_questcompleted_subject', 'local_aceengine', $xpearned);
 
         $a = new \stdClass();
         $a->xp = $xpearned;
         $a->totalxp = $totalxp;
         $a->level = $level;
         $a->coursename = $coursename;
-        $body = get_string('notification_questcompleted_body', 'local_ace', $a);
+        $body = get_string('notification_questcompleted_body', 'local_aceengine', $a);
 
-        $dashboardurl = new moodle_url('/local/ace/index.php', ['courseid' => $courseid]);
+        $dashboardurl = new moodle_url('/local/aceengine/index.php', ['courseid' => $courseid]);
 
         $message = new message();
-        $message->component = 'local_ace';
+        $message->component = 'local_aceengine';
         $message->name = 'questcompleted';
         $message->userfrom = core_user::get_noreply_user();
         $message->userto = $user;
@@ -124,7 +124,7 @@ class notification_manager {
         $message->fullmessagehtml = $body;
         $message->smallmessage = $subject;
         $message->contexturl = $dashboardurl->out(false);
-        $message->contexturlname = get_string('dashboard', 'local_ace');
+        $message->contexturlname = get_string('dashboard', 'local_aceengine');
         $message->courseid = $courseid;
 
         self::safe_message_send($message);
@@ -149,13 +149,13 @@ class notification_manager {
         $a = new \stdClass();
         $a->level = $newlevel;
         $a->coursename = $coursename;
-        $subject = get_string('notification_levelup_subject', 'local_ace', $newlevel);
-        $body = get_string('notification_levelup_body', 'local_ace', $a);
+        $subject = get_string('notification_levelup_subject', 'local_aceengine', $newlevel);
+        $body = get_string('notification_levelup_body', 'local_aceengine', $a);
 
-        $dashboardurl = new moodle_url('/local/ace/index.php', ['courseid' => $courseid]);
+        $dashboardurl = new moodle_url('/local/aceengine/index.php', ['courseid' => $courseid]);
 
         $message = new message();
-        $message->component = 'local_ace';
+        $message->component = 'local_aceengine';
         $message->name = 'levelup';
         $message->userfrom = core_user::get_noreply_user();
         $message->userto = $user;
@@ -165,7 +165,7 @@ class notification_manager {
         $message->fullmessagehtml = $body;
         $message->smallmessage = $subject;
         $message->contexturl = $dashboardurl->out(false);
-        $message->contexturlname = get_string('dashboard', 'local_ace');
+        $message->contexturlname = get_string('dashboard', 'local_aceengine');
         $message->courseid = $courseid;
 
         self::safe_message_send($message);
@@ -190,17 +190,17 @@ class notification_manager {
         }
 
         $coursename = self::get_course_name($courseid);
-        $subject = get_string('notification_recommendation_subject', 'local_ace', $count);
+        $subject = get_string('notification_recommendation_subject', 'local_aceengine', $count);
 
         $a = new \stdClass();
         $a->count = $count;
         $a->coursename = $coursename;
-        $body = get_string('notification_recommendation_body', 'local_ace', $a);
+        $body = get_string('notification_recommendation_body', 'local_aceengine', $a);
 
-        $dashboardurl = new moodle_url('/local/ace/index.php', ['courseid' => $courseid]);
+        $dashboardurl = new moodle_url('/local/aceengine/index.php', ['courseid' => $courseid]);
 
         $message = new message();
-        $message->component = 'local_ace';
+        $message->component = 'local_aceengine';
         $message->name = 'recommendation';
         $message->userfrom = core_user::get_noreply_user();
         $message->userto = $user;
@@ -210,7 +210,7 @@ class notification_manager {
         $message->fullmessagehtml = $body;
         $message->smallmessage = $subject;
         $message->contexturl = $dashboardurl->out(false);
-        $message->contexturlname = get_string('dashboard', 'local_ace');
+        $message->contexturlname = get_string('dashboard', 'local_aceengine');
         $message->courseid = $courseid;
 
         self::safe_message_send($message);

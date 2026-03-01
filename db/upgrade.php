@@ -15,20 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade steps for local_ace.
+ * Upgrade steps for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Upgrade the local_ace plugin.
+ * Upgrade the local_aceengine plugin.
  *
  * @param int $oldversion The old version of the plugin.
  * @return bool
  */
-function xmldb_local_ace_upgrade($oldversion) {
+function xmldb_local_aceengine_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
 
@@ -50,9 +50,9 @@ function xmldb_local_ace_upgrade($oldversion) {
                 if ($ctxrecord) {
                     $courseid = $ctxrecord->instanceid;
                     // Only set if not already configured.
-                    $existing = get_config('local_ace', 'ace_course_enabled_' . $courseid);
+                    $existing = get_config('local_aceengine', 'ace_course_enabled_' . $courseid);
                     if ($existing === false) {
-                        set_config('ace_course_enabled_' . $courseid, 1, 'local_ace');
+                        set_config('ace_course_enabled_' . $courseid, 1, 'local_aceengine');
                     }
                 }
             }
@@ -61,7 +61,7 @@ function xmldb_local_ace_upgrade($oldversion) {
         // Delete all active quests — they may have wrong targetid format
         // (instance ID instead of cm.id). New quests will be regenerated
         // by the daily scheduled task with correct targeting.
-        $DB->delete_records('local_ace_quests', ['status' => 'active']);
+        $DB->delete_records('local_aceengine_quests', ['status' => 'active']);
 
         upgrade_plugin_savepoint(true, 2026022202, 'local', 'ace');
     }
@@ -83,15 +83,15 @@ function xmldb_local_ace_upgrade($oldversion) {
         // preserved for local_ace_pro to adopt.
 
         // Clean up Pro-only config values that are no longer used.
-        unset_config('adaptivedifficulty', 'local_ace');
-        unset_config('teamxp', 'local_ace');
+        unset_config('adaptivedifficulty', 'local_aceengine');
+        unset_config('teamxp', 'local_aceengine');
 
         upgrade_plugin_savepoint(true, 2026022204, 'local', 'ace');
     }
 
     if ($oldversion < 2026022205) {
-        // Add credit and AI config cache columns to local_ace_license.
-        $table = new \xmldb_table('local_ace_license');
+        // Add credit and AI config cache columns to local_aceengine_license.
+        $table = new \xmldb_table('local_aceengine_license');
 
         $field = new \xmldb_field(
             'credits_remaining',
@@ -121,8 +121,8 @@ function xmldb_local_ace_upgrade($oldversion) {
     }
 
     if ($oldversion < 2026022206) {
-        // Add 'recommended' column to local_ace_quests for AI-powered quest recommendations.
-        $table = new \xmldb_table('local_ace_quests');
+        // Add 'recommended' column to local_aceengine_quests for AI-powered quest recommendations.
+        $table = new \xmldb_table('local_aceengine_quests');
 
         $field = new \xmldb_field('recommended', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'completeddate');
         if (!$dbman->field_exists($table, $field)) {
@@ -133,8 +133,8 @@ function xmldb_local_ace_upgrade($oldversion) {
     }
 
     if ($oldversion < 2026022208) {
-        // Add heartbeat columns to local_ace_license for periodic license validation.
-        $table = new \xmldb_table('local_ace_license');
+        // Add heartbeat columns to local_aceengine_license for periodic license validation.
+        $table = new \xmldb_table('local_aceengine_license');
 
         $field = new \xmldb_field('heartbeat_interval', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '21600', 'ai_config');
         if (!$dbman->field_exists($table, $field)) {

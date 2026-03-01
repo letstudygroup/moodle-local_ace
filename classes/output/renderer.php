@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renderer for local_ace output.
+ * Renderer for local_aceengine output.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\output;
+namespace local_aceengine\output;
 
 /**
- * Plugin renderer for local_ace.
+ * Plugin renderer for local_aceengine.
  *
  * Provides rendering methods for the ACE dashboard and quest card components.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -42,7 +42,7 @@ class renderer extends \plugin_renderer_base {
      */
     public function render_dashboard(dashboard $page): string {
         $data = $page->export_for_template($this);
-        return $this->render_from_template('local_ace/dashboard', $data);
+        return $this->render_from_template('local_aceengine/dashboard', $data);
     }
 
     /**
@@ -53,7 +53,7 @@ class renderer extends \plugin_renderer_base {
      */
     public function render_quest_card(quest_card $quest): string {
         $data = $quest->export_for_template($this);
-        return $this->render_from_template('local_ace/quest_card', $data);
+        return $this->render_from_template('local_aceengine/quest_card', $data);
     }
 
     /**
@@ -64,6 +64,6 @@ class renderer extends \plugin_renderer_base {
      */
     public function render_my_quests(my_quests $page): string {
         $data = $page->export_for_template($this);
-        return $this->render_from_template('local_ace/my_quests', $data);
+        return $this->render_from_template('local_aceengine/my_quests', $data);
     }
 }

@@ -14,25 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace\external;
+namespace local_aceengine\external;
 
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/local/ace/lib.php');
+require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
-use local_ace\notification_manager;
+use local_aceengine\notification_manager;
 use context_course;
 use invalid_parameter_exception;
 use moodle_exception;
 /**
  * External function to mark a quest as completed and award XP.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -69,17 +69,17 @@ class complete_quest extends external_api {
         $userid = (int) $USER->id;
 
         // Get the quest record.
-        $quest = $DB->get_record('local_ace_quests', ['id' => $questid]);
+        $quest = $DB->get_record('local_aceengine_quests', ['id' => $questid]);
         if (!$quest) {
             throw new invalid_parameter_exception(
-                get_string('error_questnotfound', 'local_ace')
+                get_string('error_questnotfound', 'local_aceengine')
             );
         }
 
         // Verify the quest belongs to the current user.
         if ((int) $quest->userid !== $userid) {
             throw new invalid_parameter_exception(
-                get_string('error_questnotfound', 'local_ace')
+                get_string('error_questnotfound', 'local_aceengine')
             );
         }
 
@@ -89,28 +89,28 @@ class complete_quest extends external_api {
         require_capability('local/ace:viewdashboard', $context);
 
         // Check per-course enablement.
-        if (!local_ace_is_enabled_for_course((int) $quest->courseid)) {
-            throw new \moodle_exception('error_ace_disabled_for_course', 'local_ace');
+        if (!local_aceengine_is_enabled_for_course((int) $quest->courseid)) {
+            throw new \moodle_exception('error_ace_disabled_for_course', 'local_aceengine');
         }
 
         // Check quest is still active.
         if ($quest->status !== 'active') {
-            throw new moodle_exception('error_questalreadycompleted', 'local_ace');
+            throw new moodle_exception('error_questalreadycompleted', 'local_aceengine');
         }
 
         // Check if quest has expired.
         if ($quest->expirydate > 0 && $quest->expirydate < time()) {
             // Mark quest as expired.
-            $DB->set_field('local_ace_quests', 'status', 'expired', ['id' => $questid]);
-            $DB->set_field('local_ace_quests', 'timemodified', time(), ['id' => $questid]);
-            throw new moodle_exception('questexpired', 'local_ace');
+            $DB->set_field('local_aceengine_quests', 'status', 'expired', ['id' => $questid]);
+            $DB->set_field('local_aceengine_quests', 'timemodified', time(), ['id' => $questid]);
+            throw new moodle_exception('questexpired', 'local_aceengine');
         }
 
         $now = time();
         $xpearned = (int) $quest->xpreward;
 
         // Mark quest as completed.
-        $DB->update_record('local_ace_quests', (object) [
+        $DB->update_record('local_aceengine_quests', (object) [
             'id' => $questid,
             'status' => 'completed',
             'completeddate' => $now,
@@ -118,7 +118,7 @@ class complete_quest extends external_api {
         ]);
 
         // Award XP to the user.
-        $xprecord = $DB->get_record('local_ace_xp', [
+        $xprecord = $DB->get_record('local_aceengine_xp', [
             'userid' => $userid,
             'courseid' => $quest->courseid,
         ]);
@@ -127,8 +127,8 @@ class complete_quest extends external_api {
 
         if ($xprecord) {
             $newxp = (int) $xprecord->xp + $xpearned;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->update_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->update_record('local_aceengine_xp', (object) [
                 'id' => $xprecord->id,
                 'xp' => $newxp,
                 'level' => $newlevel,
@@ -136,8 +136,8 @@ class complete_quest extends external_api {
             ]);
         } else {
             $newxp = $xpearned;
-            $newlevel = (new \local_ace\xp_manager())->calculate_level($newxp);
-            $DB->insert_record('local_ace_xp', (object) [
+            $newlevel = (new \local_aceengine\xp_manager())->calculate_level($newxp);
+            $DB->insert_record('local_aceengine_xp', (object) [
                 'userid' => $userid,
                 'courseid' => $quest->courseid,
                 'xp' => $newxp,

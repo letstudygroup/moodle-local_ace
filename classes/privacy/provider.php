@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy provider for local_ace.
+ * Privacy provider for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\privacy;
+namespace local_aceengine\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
@@ -31,12 +31,12 @@ use core_privacy\local\request\contextlist;
 use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 /**
- * Privacy provider implementation for local_ace.
+ * Privacy provider implementation for local_aceengine.
  *
  * Describes all database tables storing user data and provides
  * export/deletion functionality for GDPR compliance.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -46,11 +46,11 @@ class provider implements
     \core_privacy\local\request\plugin\provider {
     /** @var array Tables that store per-user per-course data. */
     private const USER_TABLES = [
-        'local_ace_engagement',
-        'local_ace_mastery',
-        'local_ace_quests',
-        'local_ace_xp',
-        'local_ace_analytics',
+        'local_aceengine_engagement',
+        'local_aceengine_mastery',
+        'local_aceengine_quests',
+        'local_aceengine_xp',
+        'local_aceengine_analytics',
     ];
 
     /**
@@ -61,7 +61,7 @@ class provider implements
      */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
-            'local_ace_engagement',
+            'local_aceengine_engagement',
             [
                 'userid' => 'privacy:metadata:userid',
                 'courseid' => 'privacy:metadata:courseid',
@@ -73,11 +73,11 @@ class provider implements
                 'timecreated' => 'privacy:metadata:timecreated',
                 'timemodified' => 'privacy:metadata:timemodified',
             ],
-            'privacy:metadata:local_ace_engagement'
+            'privacy:metadata:local_aceengine_engagement'
         );
 
         $collection->add_database_table(
-            'local_ace_mastery',
+            'local_aceengine_mastery',
             [
                 'userid' => 'privacy:metadata:userid',
                 'courseid' => 'privacy:metadata:courseid',
@@ -88,27 +88,27 @@ class provider implements
                 'timecreated' => 'privacy:metadata:timecreated',
                 'timemodified' => 'privacy:metadata:timemodified',
             ],
-            'privacy:metadata:local_ace_mastery'
+            'privacy:metadata:local_aceengine_mastery'
         );
 
         $collection->add_database_table(
-            'local_ace_quests',
+            'local_aceengine_quests',
             [
                 'userid' => 'privacy:metadata:userid',
                 'courseid' => 'privacy:metadata:courseid',
-                'questtype' => 'privacy:metadata:local_ace_quests',
-                'title' => 'privacy:metadata:local_ace_quests',
-                'description' => 'privacy:metadata:local_ace_quests',
+                'questtype' => 'privacy:metadata:local_aceengine_quests',
+                'title' => 'privacy:metadata:local_aceengine_quests',
+                'description' => 'privacy:metadata:local_aceengine_quests',
                 'xpreward' => 'privacy:metadata:xp',
-                'status' => 'privacy:metadata:local_ace_quests',
+                'status' => 'privacy:metadata:local_aceengine_quests',
                 'timecreated' => 'privacy:metadata:timecreated',
                 'timemodified' => 'privacy:metadata:timemodified',
             ],
-            'privacy:metadata:local_ace_quests'
+            'privacy:metadata:local_aceengine_quests'
         );
 
         $collection->add_database_table(
-            'local_ace_xp',
+            'local_aceengine_xp',
             [
                 'userid' => 'privacy:metadata:userid',
                 'courseid' => 'privacy:metadata:courseid',
@@ -117,13 +117,13 @@ class provider implements
                 'timecreated' => 'privacy:metadata:timecreated',
                 'timemodified' => 'privacy:metadata:timemodified',
             ],
-            'privacy:metadata:local_ace_xp'
+            'privacy:metadata:local_aceengine_xp'
         );
 
-        // NOTE: local_ace_team_xp is now handled by local_ace_pro privacy provider.
+        // NOTE: local_aceengine_team_xp is now handled by local_ace_pro privacy provider.
 
         $collection->add_database_table(
-            'local_ace_analytics',
+            'local_aceengine_analytics',
             [
                 'userid' => 'privacy:metadata:userid',
                 'courseid' => 'privacy:metadata:courseid',
@@ -133,10 +133,10 @@ class provider implements
                 'snapshot_date' => 'privacy:metadata:timecreated',
                 'timecreated' => 'privacy:metadata:timecreated',
             ],
-            'privacy:metadata:local_ace_analytics'
+            'privacy:metadata:local_aceengine_analytics'
         );
 
-        // NOTE: local_ace_mission_templates is now handled by local_ace_pro privacy provider.
+        // NOTE: local_aceengine_mission_templates is now handled by local_ace_pro privacy provider.
 
         return $collection;
     }
@@ -233,64 +233,64 @@ class provider implements
             }
 
             $courseid = $context->instanceid;
-            $subcontext = [get_string('pluginname', 'local_ace')];
+            $subcontext = [get_string('pluginname', 'local_aceengine')];
 
             // Export engagement data.
-            $records = $DB->get_records('local_ace_engagement', [
+            $records = $DB->get_records('local_aceengine_engagement', [
                 'userid' => $userid,
                 'courseid' => $courseid,
             ]);
             if (!empty($records)) {
                 writer::with_context($context)->export_data(
-                    array_merge($subcontext, [get_string('engagementscore', 'local_ace')]),
+                    array_merge($subcontext, [get_string('engagementscore', 'local_aceengine')]),
                     (object) ['engagement' => array_values($records)]
                 );
             }
 
             // Export mastery data.
-            $records = $DB->get_records('local_ace_mastery', [
+            $records = $DB->get_records('local_aceengine_mastery', [
                 'userid' => $userid,
                 'courseid' => $courseid,
             ]);
             if (!empty($records)) {
                 writer::with_context($context)->export_data(
-                    array_merge($subcontext, [get_string('masteryscore', 'local_ace')]),
+                    array_merge($subcontext, [get_string('masteryscore', 'local_aceengine')]),
                     (object) ['mastery' => array_values($records)]
                 );
             }
 
             // Export quest data.
-            $records = $DB->get_records('local_ace_quests', [
+            $records = $DB->get_records('local_aceengine_quests', [
                 'userid' => $userid,
                 'courseid' => $courseid,
             ]);
             if (!empty($records)) {
                 writer::with_context($context)->export_data(
-                    array_merge($subcontext, [get_string('dailyquests', 'local_ace')]),
+                    array_merge($subcontext, [get_string('dailyquests', 'local_aceengine')]),
                     (object) ['quests' => array_values($records)]
                 );
             }
 
             // Export XP data.
-            $records = $DB->get_records('local_ace_xp', [
+            $records = $DB->get_records('local_aceengine_xp', [
                 'userid' => $userid,
                 'courseid' => $courseid,
             ]);
             if (!empty($records)) {
                 writer::with_context($context)->export_data(
-                    array_merge($subcontext, [get_string('totalxp', 'local_ace')]),
+                    array_merge($subcontext, [get_string('totalxp', 'local_aceengine')]),
                     (object) ['xp' => array_values($records)]
                 );
             }
 
             // Export analytics data.
-            $records = $DB->get_records('local_ace_analytics', [
+            $records = $DB->get_records('local_aceengine_analytics', [
                 'userid' => $userid,
                 'courseid' => $courseid,
             ]);
             if (!empty($records)) {
                 writer::with_context($context)->export_data(
-                    array_merge($subcontext, [get_string('analytics', 'local_ace')]),
+                    array_merge($subcontext, [get_string('analytics', 'local_aceengine')]),
                     (object) ['analytics' => array_values($records)]
                 );
             }

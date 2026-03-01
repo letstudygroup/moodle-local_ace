@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 /**
  * Engagement scorer class for calculating composite engagement scores.
  *
@@ -22,7 +22,7 @@ namespace local_ace;
  * and consistency scores for a user in a given course. Weights are
  * configurable via admin settings.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -59,13 +59,13 @@ class engagement_scorer {
         $participationscore = $this->get_participation_score($userid, $courseid);
         $consistencyscore = $this->get_consistency_score($userid, $courseid);
 
-        $wcompletion = (float) get_config('local_ace', 'engagementweight_completion')
+        $wcompletion = (float) get_config('local_aceengine', 'engagementweight_completion')
             ?: self::DEFAULT_WEIGHT_COMPLETION;
-        $wtimeliness = (float) get_config('local_ace', 'engagementweight_timeliness')
+        $wtimeliness = (float) get_config('local_aceengine', 'engagementweight_timeliness')
             ?: self::DEFAULT_WEIGHT_TIMELINESS;
-        $wparticipation = (float) get_config('local_ace', 'engagementweight_participation')
+        $wparticipation = (float) get_config('local_aceengine', 'engagementweight_participation')
             ?: self::DEFAULT_WEIGHT_PARTICIPATION;
-        $wconsistency = (float) get_config('local_ace', 'engagementweight_consistency')
+        $wconsistency = (float) get_config('local_aceengine', 'engagementweight_consistency')
             ?: self::DEFAULT_WEIGHT_CONSISTENCY;
 
         $totalweight = $wcompletion + $wtimeliness + $wparticipation + $wconsistency;
@@ -366,7 +366,7 @@ class engagement_scorer {
 
         $now = time();
 
-        $existing = $DB->get_record('local_ace_engagement', [
+        $existing = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -396,10 +396,10 @@ class engagement_scorer {
 
         if ($existing) {
             $record->id = $existing->id;
-            $DB->update_record('local_ace_engagement', $record);
+            $DB->update_record('local_aceengine_engagement', $record);
         } else {
             $record->timecreated = $now;
-            $DB->insert_record('local_ace_engagement', $record);
+            $DB->insert_record('local_aceengine_engagement', $record);
         }
     }
 }

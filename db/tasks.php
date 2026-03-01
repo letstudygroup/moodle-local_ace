@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Scheduled task definitions for local_ace.
+ * Scheduled task definitions for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = [
     [
-        'classname' => 'local_ace\task\generate_daily_quests',
+        'classname' => 'local_aceengine\task\generate_daily_quests',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '5',
@@ -35,7 +35,7 @@ $tasks = [
         'dayofweek' => '*',
     ],
     [
-        'classname' => 'local_ace\task\calculate_scores',
+        'classname' => 'local_aceengine\task\calculate_scores',
         'blocking' => 0,
         'minute' => '30',
         'hour' => '*/4',
@@ -44,7 +44,7 @@ $tasks = [
         'dayofweek' => '*',
     ],
     [
-        'classname' => 'local_ace\task\cleanup_expired',
+        'classname' => 'local_aceengine\task\cleanup_expired',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '3',
@@ -53,7 +53,7 @@ $tasks = [
         'dayofweek' => '0',
     ],
     [
-        'classname' => 'local_ace\task\sync_license',
+        'classname' => 'local_aceengine\task\sync_license',
         'blocking' => 0,
         'minute' => '0',
         'hour' => '12',

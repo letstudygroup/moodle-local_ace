@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_ace;
+namespace local_aceengine;
 /**
  * Adaptive engine class for adjusting quest difficulty.
  *
@@ -22,7 +22,7 @@ namespace local_ace;
  * difficulty level and adjusts quest parameters accordingly. Uses a
  * rule-based approach available to all installations.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -61,7 +61,7 @@ class adaptive_engine {
      * @return bool True if the adaptive engine is available.
      */
     public function is_available(): bool {
-        return (bool) get_config('local_ace', 'enableplugin');
+        return (bool) get_config('local_aceengine', 'enableplugin');
     }
 
     /**
@@ -81,14 +81,14 @@ class adaptive_engine {
         global $DB;
 
         // Retrieve cached engagement score.
-        $engagement = $DB->get_record('local_ace_engagement', [
+        $engagement = $DB->get_record('local_aceengine_engagement', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
         $engagementscore = $engagement ? (float) $engagement->score : 0.0;
 
         // Retrieve cached mastery score.
-        $mastery = $DB->get_record('local_ace_mastery', [
+        $mastery = $DB->get_record('local_aceengine_mastery', [
             'userid' => $userid,
             'courseid' => $courseid,
         ]);
@@ -132,7 +132,7 @@ class adaptive_engine {
         $questparams['difficulty'] = $difficulty;
 
         // Adjust XP reward based on difficulty.
-        $basexp = $questparams['xpreward'] ?? ((int) get_config('local_ace', 'xp_per_quest') ?: 50);
+        $basexp = $questparams['xpreward'] ?? ((int) get_config('local_aceengine', 'xp_per_quest') ?: 50);
 
         $multiplier = match ($difficulty) {
             self::DIFFICULTY_HARD => self::XP_MULTIPLIER_HARD,

@@ -1,10 +1,10 @@
 /**
- * Styles for local_ace plugin.
+ * Styles for local_aceengine plugin.
  *
  * All selectors are namespaced with .local-ace- to avoid conflicts.
  * Uses Bootstrap CSS variables for theme compatibility.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 LetStudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

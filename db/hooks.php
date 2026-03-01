@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Hook callbacks for local_ace.
+ * Hook callbacks for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,14 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 $callbacks = [
     [
         'hook' => core_course\hook\after_form_definition::class,
-        'callback' => [local_ace\hook_listener::class, 'extend_course_form'],
+        'callback' => [local_aceengine\hook_listener::class, 'extend_course_form'],
     ],
     [
         'hook' => core_course\hook\after_form_definition_after_data::class,
-        'callback' => [local_ace\hook_listener::class, 'set_course_form_defaults'],
+        'callback' => [local_aceengine\hook_listener::class, 'set_course_form_defaults'],
     ],
     [
         'hook' => core_course\hook\after_form_submission::class,
-        'callback' => [local_ace\hook_listener::class, 'save_course_form'],
+        'callback' => [local_aceengine\hook_listener::class, 'save_course_form'],
     ],
 ];

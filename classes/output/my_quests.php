@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * My Quests renderable for local_ace.
+ * My Quests renderable for local_aceengine.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace local_ace\output;
+namespace local_aceengine\output;
 
 use renderable;
 use templatable;
@@ -35,7 +35,7 @@ use moodle_url;
  * Loads all quests across all enrolled courses where ACE is enabled,
  * grouped by course, for a global "My Quests" view.
  *
- * @package    local_ace
+ * @package    local_aceengine
  * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -61,7 +61,7 @@ class my_quests implements renderable, templatable {
     public function export_for_template(renderer_base $output): array {
         global $DB, $CFG;
 
-        require_once($CFG->dirroot . '/local/ace/lib.php');
+        require_once($CFG->dirroot . '/local/aceengine/lib.php');
 
         // Get all courses where the user is enrolled.
         $enrolledcourses = enrol_get_users_courses($this->userid, true, 'id, fullname, shortname');
@@ -76,12 +76,12 @@ class my_quests implements renderable, templatable {
                 continue;
             }
 
-            if (!local_ace_is_enabled_for_course($course->id)) {
+            if (!local_aceengine_is_enabled_for_course($course->id)) {
                 continue;
             }
 
             // Load XP and level for this course.
-            $xprecord = $DB->get_record('local_ace_xp', [
+            $xprecord = $DB->get_record('local_aceengine_xp', [
                 'userid' => $this->userid,
                 'courseid' => $course->id,
             ]);
@@ -92,7 +92,7 @@ class my_quests implements renderable, templatable {
             // Load active quests (exclude expired).
             $now = time();
             $activequests = $DB->get_records_sql(
-                'SELECT * FROM {local_ace_quests}
+                'SELECT * FROM {local_aceengine_quests}
                  WHERE userid = ? AND courseid = ? AND status = ?
                    AND (expirydate = 0 OR expirydate > ?)
                  ORDER BY timecreated DESC',
@@ -100,7 +100,7 @@ class my_quests implements renderable, templatable {
             );
 
             // Load completed quests.
-            $completedquests = $DB->get_records('local_ace_quests', [
+            $completedquests = $DB->get_records('local_aceengine_quests', [
                 'userid' => $this->userid,
                 'courseid' => $course->id,
                 'status' => 'completed',
@@ -131,7 +131,7 @@ class my_quests implements renderable, templatable {
             }
 
             $courseurl = (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false);
-            $dashboardurl = (new moodle_url('/local/ace/index.php', ['courseid' => $course->id]))->out(false);
+            $dashboardurl = (new moodle_url('/local/aceengine/index.php', ['courseid' => $course->id]))->out(false);
 
             $courses[] = [
                 'courseid' => $course->id,
