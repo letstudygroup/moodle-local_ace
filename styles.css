@@ -1,0 +1,176 @@
+/**
+ * Styles for local_ace plugin.
+ *
+ * All selectors are namespaced with .local-ace- to avoid conflicts.
+ * Uses Bootstrap CSS variables for theme compatibility.
+ *
+ * @package    local_ace
+ * @copyright  2026 LetStudy Group
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/* Dashboard container */
+.local-ace-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Score cards */
+.local-ace-score-card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.5rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.local-ace-score-card:hover {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.local-ace-score-value {
+    font-weight: 700;
+    color: var(--dark, #333);
+}
+
+/* Progress bars */
+.local-ace-progress {
+    height: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.local-ace-progress .progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Quest cards */
+.local-ace-quest-card {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.5rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, opacity 0.5s ease;
+}
+
+.local-ace-quest-card:hover {
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.local-ace-quest-completed {
+    border-color: var(--success, #28a745);
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+.local-ace-quest-expired {
+    border-color: var(--danger, #dc3545);
+    background-color: rgba(220, 53, 69, 0.05);
+    opacity: 0.7;
+}
+
+.local-ace-quest-title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.local-ace-quest-description {
+    font-size: 0.875rem;
+}
+
+/* Quest type badge */
+.local-ace-quest-type-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+/* Difficulty stars */
+.local-ace-quest-difficulty {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.local-ace-difficulty-star {
+    display: inline-block;
+    margin-right: 1px;
+}
+
+.local-ace-difficulty-star-filled {
+    color: var(--warning, #ffc107);
+}
+
+.local-ace-difficulty-star-empty {
+    color: var(--gray-light, #dee2e6);
+}
+
+/* XP badge */
+.local-ace-xp-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Quest expiry */
+.local-ace-quest-expiry {
+    font-size: 0.8rem;
+}
+
+/* Complete quest button */
+.local-ace-complete-quest-btn {
+    align-self: flex-start;
+}
+
+.local-ace-complete-quest-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* Completed quests summary */
+.local-ace-completed-badge {
+    font-size: 1rem;
+    padding: 0.4em 0.8em;
+}
+
+/* Quests section heading */
+.local-ace-quests-section h3 {
+    font-weight: 600;
+    color: var(--dark, #333);
+    border-bottom: 2px solid var(--primary, #007bff);
+    padding-bottom: 0.5rem;
+}
+
+/* Analytics table */
+.local-ace-analytics-table {
+    font-size: 0.9rem;
+}
+
+.local-ace-analytics-table th {
+    font-weight: 600;
+    border-bottom: 2px solid var(--gray-light, #dee2e6);
+}
+
+/* Recommendation icon */
+.local-ace-rec-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* My Quests - course link stops propagation via CSS */
+.local-ace-course-link {
+    position: relative;
+    z-index: 1;
+}
+
+/* Collapsible headers */
+[data-toggle="collapse"][role="button"] {
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .local-ace-score-value {
+        font-size: 2rem;
+    }
+
+    .local-ace-quest-card .card-body {
+        padding: 0.75rem;
+    }
+}

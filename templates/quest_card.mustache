@@ -1,0 +1,124 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_ace/quest_card
+
+    Quest card template.
+
+    Displays a single quest with title, description, type badge,
+    difficulty stars, XP reward, expiry countdown, and a link to the activity.
+
+    Context variables required for this template:
+    * id - Quest ID
+    * title - Quest title
+    * description - Quest description text
+    * questtype - Quest type key
+    * questtypelabel - Translated quest type label
+    * xpreward - XP reward amount
+    * difficulty - Difficulty level (1-3)
+    * difficultystars - Array of {filled: bool} for star rendering
+    * isactive - Whether the quest is active
+    * iscompleted - Whether the quest is completed
+    * isexpired - Whether the quest has expired
+    * expirydisplay - Human-readable time remaining string
+    * activityurl - URL to the target activity
+    * hasactivityurl - Whether an activity URL is available
+
+    Example context (json):
+    {
+        "id": 1,
+        "title": "Quiz challenge: Chapter 3 Quiz",
+        "questtype": "quiz",
+        "questtypelabel": "Quiz challenge",
+        "xpreward": 50,
+        "difficulty": 2,
+        "difficultystars": [{"filled": true}, {"filled": true}, {"filled": false}],
+        "isactive": true,
+        "iscompleted": false,
+        "isexpired": false,
+        "expirydisplay": "23 hours",
+        "activityurl": "/mod/quiz/view.php?id=42",
+        "hasactivityurl": true
+    }
+}}
+<div class="card local-ace-quest-card h-100 {{#iscompleted}}local-ace-quest-completed{{/iscompleted}} {{#isexpired}}local-ace-quest-expired{{/isexpired}}"
+     data-questid="{{id}}">
+    <div class="card-body d-flex flex-column">
+        {{! Quest type badge }}
+        <div class="mb-2">
+            <span class="badge badge-secondary local-ace-quest-type-badge">{{questtypelabel}}</span>
+            {{#recommended}}
+                <span class="badge badge-primary local-ace-recommended-badge ml-1">{{#str}}quest_recommended, local_ace{{/str}}</span>
+            {{/recommended}}
+        </div>
+
+        {{! Quest title }}
+        <h5 class="card-title local-ace-quest-title">{{title}}</h5>
+
+        {{! Quest description }}
+        {{#description}}
+            <p class="card-text text-muted local-ace-quest-description flex-grow-1">{{{description}}}</p>
+        {{/description}}
+
+        {{! Difficulty stars }}
+        <div class="local-ace-quest-difficulty mb-2">
+            {{#difficultystars}}
+                {{#filled}}
+                    <span class="local-ace-difficulty-star local-ace-difficulty-star-filled" aria-hidden="true">&#9733;</span>
+                {{/filled}}
+                {{^filled}}
+                    <span class="local-ace-difficulty-star local-ace-difficulty-star-empty" aria-hidden="true">&#9734;</span>
+                {{/filled}}
+            {{/difficultystars}}
+        </div>
+
+        {{! XP reward }}
+        <div class="local-ace-quest-xp mb-2">
+            <span class="badge badge-warning local-ace-xp-badge">+{{xpreward}} {{#str}}xp_label, local_ace{{/str}}</span>
+        </div>
+
+        {{! Expiry countdown }}
+        {{#expirydisplay}}
+            <div class="local-ace-quest-expiry mb-2">
+                {{#isexpired}}
+                    <small class="text-danger">{{expirydisplay}}</small>
+                {{/isexpired}}
+                {{^isexpired}}
+                    <small class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> {{expirydisplay}}</small>
+                {{/isexpired}}
+            </div>
+        {{/expirydisplay}}
+
+        {{! Activity link or status badge }}
+        {{#isactive}}
+            {{#hasactivityurl}}
+                <a href="{{activityurl}}" class="btn btn-primary btn-sm mt-auto local-ace-go-to-activity">
+                    {{#str}}gotoactivity, local_ace{{/str}}
+                </a>
+            {{/hasactivityurl}}
+            {{^hasactivityurl}}
+                <span class="badge badge-info mt-auto">{{#str}}quest_autocompletable, local_ace{{/str}}</span>
+            {{/hasactivityurl}}
+        {{/isactive}}
+        {{#iscompleted}}
+            <span class="badge badge-success mt-auto">{{#str}}questcompleted_badge, local_ace{{/str}}</span>
+        {{/iscompleted}}
+        {{#isexpired}}
+            <span class="badge badge-danger mt-auto">{{expirydisplay}}</span>
+        {{/isexpired}}
+    </div>
+</div>
