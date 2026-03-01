@@ -1,4 +1,4 @@
-# ACE - Adaptive Course Enhancement for Moodle
+# ACE - Adaptive Challenge Engine for Moodle
 
 ACE is a free Moodle local plugin that brings AI-powered learning analytics, adaptive engagement scoring, mastery tracking, and gamification quests to your courses.
 
