@@ -50,8 +50,8 @@ Customize how engagement is calculated by adjusting weights for:
 
 ## Companion Plugins
 
-- [ACE Dashboard Block](https://github.com/letstudygroup/moodle-block_ace) - Course block displaying engagement and mastery scores.
-- [ACE Quests Block](https://github.com/letstudygroup/moodle-block_ace_quests) - Course block showing daily quests and XP progress.
+- [ACE Dashboard Block](https://plugins.letstudy.gr/moodle-block_ace) - Course block displaying engagement and mastery scores.
+- [ACE Quests Block](https://plugins.letstudy.gr/moodle-block_ace_quests) - Course block showing daily quests and XP progress.
 
 ## Scheduled Tasks
 
