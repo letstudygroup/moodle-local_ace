@@ -79,4 +79,4 @@ This plugin is licensed under the [GNU GPL v3 or later](https://www.gnu.org/copy
 
 ## Copyright
 
-2026 LetStudy Group
+2026 Letstudy Group

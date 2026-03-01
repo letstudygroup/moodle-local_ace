@@ -24,7 +24,7 @@ use core\task\scheduled_task;
  * and deletes analytics snapshot records older than 90 days.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cleanup_expired extends scheduled_task {

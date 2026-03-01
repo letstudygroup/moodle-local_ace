@@ -23,7 +23,7 @@ namespace local_ace;
  * rule-based approach available to all installations.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class adaptive_engine {

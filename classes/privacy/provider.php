@@ -18,7 +18,7 @@
  * Privacy provider for local_ace.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,7 +37,7 @@ use core_privacy\local\request\writer;
  * export/deletion functionality for GDPR compliance.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements

@@ -31,7 +31,7 @@ use context_course;
  * External function to get active quests for the current user in a course.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_quest_data extends external_api {

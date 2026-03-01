@@ -26,7 +26,7 @@ use core_course\hook\after_form_submission;
  * Hooks into the course edit form to add ACE enable/disable toggle.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class hook_listener {

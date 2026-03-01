@@ -20,7 +20,7 @@
  * Main entry point for the Adaptive Challenge Engine student dashboard.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

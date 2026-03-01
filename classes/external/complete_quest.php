@@ -33,7 +33,7 @@ use moodle_exception;
  * External function to mark a quest as completed and award XP.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class complete_quest extends external_api {

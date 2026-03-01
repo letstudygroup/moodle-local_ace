@@ -23,7 +23,7 @@ namespace local_ace;
  * triangular progression: level N requires the sum of (1..N-1)*100 XP.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class xp_manager {

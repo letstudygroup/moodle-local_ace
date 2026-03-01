@@ -18,7 +18,7 @@
  * Dropout risk predictor for local_ace.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +35,7 @@ namespace local_ace\analytics;
  *        + (0.2 * completion_gap_factor) + (0.1 * grade_decline_factor)
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class dropout_predictor {

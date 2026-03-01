@@ -30,7 +30,7 @@ use context_course;
  * External function to get ACE dashboard data for the current user.
  *
  * @package    local_ace
- * @copyright  2026 LetStudy Group
+ * @copyright  2026 Letstudy Group
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_dashboard_data extends external_api {
